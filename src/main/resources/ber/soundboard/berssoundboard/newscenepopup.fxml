@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" style="-fx-background-color: #383838;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ber.soundboard.berssoundboard.AddNewScenePopupController">
+   <bottom>
+      <BorderPane prefHeight="39.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+         <right>
+            <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER_RIGHT">
+               <children>
+                  <Button fx:id="newSceneConfirmBtn" disable="true" mnemonicParsing="false" onAction="#newSceneConfirmBtnClicked" style="-fx-background-color: #7ba66a;" text="Confirm" textFill="WHITE" />
+                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelBtnClicked" style="-fx-background-color: null;" text="Cancel" textFill="WHITE" />
+               </children>
+            </FlowPane>
+         </right>
+      </BorderPane>
+   </bottom>
+   <center>
+      <FlowPane prefHeight="424.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Scene Name:" textFill="WHITE">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="sceneName" prefHeight="25.0" prefWidth="237.0" style="-fx-background-color: #303030; -fx-text-fill: white;" />
+            <Label fx:id="sceneNameWarning" opacity="0.0" text="A scene with the same name already exists!                " textFill="RED">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </Label>
+            <Label layoutX="10.0" layoutY="14.0" text="Scene Number*:" textFill="WHITE">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="sceneNumber" layoutX="99.0" layoutY="10.0" prefHeight="25.0" prefWidth="40.0" style="-fx-background-color: #303030;" />
+            <Label fx:id="sceneNumberWarning" layoutX="10.0" layoutY="36.0" opacity="0.0" text="A scene with the same number already exists!                " textFill="RED">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </Label>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="   *Note: This will affect the order at which you choose your scene">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="10.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="              Can only be numbers">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Text>
+         </children>
+      </FlowPane>
+   </center>
+   <top>
+      <BorderPane prefHeight="45.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+         <left>
+            <Label text="Add new scene" textFill="WHITE" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+         </left>
+      </BorderPane>
+   </top>
+</BorderPane>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #454545;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ber.soundboard.berssoundboard.MixerController">
+   <top>
+      <BorderPane prefHeight="20.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <left>
+            <Label text="Title" textFill="WHITE" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <Label text="X" textFill="WHITE" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </Label>
+         </right>
+      </BorderPane>
+   </top>
+   <center>
+      <BorderPane onMouseDragged="#onMouseDragScrollPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: null;" BorderPane.alignment="CENTER">
+         <center>
+            <GridPane onMouseEntered="#onMouseLeftScrollPane" style="-fx-background-color: #202020;" BorderPane.alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+         </center>
+         <right>
+            <ScrollPane fx:id="SoundListPane" hbarPolicy="NEVER" onMouseClicked="#onMouseClickedScrollPane" onMouseMoved="#onMouseMovedInScrollPane" onMousePressed="#onMouseClickedScrollPane" prefHeight="362.0" prefWidth="154.0" style="-fx-background-color: #383838; -fx-background: #383838;" BorderPane.alignment="CENTER">
+               <content>
+                  <GridPane fx:id="soundCueGridPane" maxHeight="1.7976931348623157E308" prefHeight="20.0" prefWidth="154.0" />
+               </content>
+            </ScrollPane>
+         </right>
+         <top>
+            <FlowPane prefHeight="0.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label prefHeight="26.0" prefWidth="51.0" style="-fx-background-color: #202020;" text="Mixer" textFill="WHITE">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </Label>
+                  <MenuButton fx:id="sceneSelector" mnemonicParsing="false" style="-fx-background-color: null;" text="MenuButton" textFill="WHITE" />
+               </children>
+            </FlowPane>
+         </top>
+      </BorderPane>
+   </center>
+</BorderPane>
