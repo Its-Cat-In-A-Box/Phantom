@@ -35,17 +35,23 @@
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
             </Label>
             <Label layoutX="10.0" layoutY="14.0" text="Scene Number*:" textFill="WHITE">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
             </Label>
-            <TextField fx:id="sceneNumber" layoutX="99.0" layoutY="10.0" prefHeight="25.0" prefWidth="40.0" style="-fx-background-color: #303030;" />
+            <TextField fx:id="sceneNumber" layoutX="99.0" layoutY="10.0" prefHeight="25.0" prefWidth="40.0" style="-fx-background-color: #303030; -fx-text-fill: white" />
             <Label fx:id="sceneNumberWarning" layoutX="10.0" layoutY="36.0" opacity="0.0" text="A scene with the same number already exists!                " textFill="RED">
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
             </Label>
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="   *Note: This will affect the order at which you choose your scene">
                <font>

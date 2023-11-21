@@ -1,6 +1,8 @@
 
 package ber.soundboard.berssoundboard;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -11,15 +13,14 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
+import javafx.stage.*;
 
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -60,7 +61,7 @@ public class SelectPlayController implements Initializable{
         }
         File[] directories = playDir.listFiles((dir, child) -> new File(dir, child).isDirectory());
         if (directories != null || directories.length != 0){
-            Arrays.sort(directories, Comparator.comparingLong(File::lastModified));
+            Arrays.sort(directories, Comparator.comparingLong(File::lastModified).reversed());
             switch (directories.length){
                 case 0:
                     break;
@@ -89,7 +90,7 @@ public class SelectPlayController implements Initializable{
 
         Random random = new Random();
         String[] randomQotd = {
-                "I've been there before, slaving away make sound effects",
+                "I've been there before, slaving away making sound effects",
                 "What should be the quote",
                 "I feel your pain",
                 "Didn't expect to see me here huh",
@@ -104,7 +105,7 @@ public class SelectPlayController implements Initializable{
                 "According to appeal to probability, this app doesn't have bugs",
                 "Quiz time: Who made this app?",
         };
-        qotd.setText(randomQotd[random.nextInt(0, randomQotd.length)]);
+        qotd.setText(randomQotd[random.nextInt(randomQotd.length)]);
 
     }
 
@@ -125,7 +126,19 @@ public class SelectPlayController implements Initializable{
 
 
     @FXML
-    void onAddNewButtonClicked(MouseEvent event) {
+    void onAddNewButtonClicked(MouseEvent event) throws IOException {
+        addNewScene();
+    }
+
+    private void addNewScene() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("newplaypopup.fxml"));
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setFullScreen(false);
+        stage.initStyle(StageStyle.UNDECORATED);
+
+        stage.show();
+        ((Stage) closeButton.getScene().getWindow()).close();
 
     }
 
@@ -140,7 +153,48 @@ public class SelectPlayController implements Initializable{
     }
     @FXML
     void onOpenButtonClicked(MouseEvent event) throws IOException {
-        loadMixer(event, firstrecent.getText());
+        DirectoryChooser dc = new DirectoryChooser();
+        dc.setInitialDirectory(new File(System.getProperty("user.dir"), "data"));
+        File dir = dc.showDialog(addNewButton.getScene().getWindow());
+
+        File jsonFile = new File(dir, dir.getName() + ".json");
+        if (jsonFile.exists()){
+            Gson gson = new Gson();
+            JsonReader reader;
+            reader = new JsonReader(new FileReader(jsonFile));
+
+            MixerJsonObject jsonObj = gson.fromJson(reader, MixerJsonObject.class);
+            File[] files = dir.listFiles();
+            List<String> fileNames = new ArrayList<>();
+            for (File f : files){
+                fileNames.add(f.getName());
+            }
+
+            boolean corruption = false;
+            String errorFile = null;
+            for (MixerJsonObject.SoundFiles sf : jsonObj.listOfSounds){
+                if (!fileNames.contains(sf.soundFile)){
+                    corruption = true;
+                    errorFile = sf.soundFile;
+                    break;
+                }
+
+            }
+            ButtonType bt = new ButtonType("Open File Location", ButtonBar.ButtonData.APPLY);
+
+            if (corruption) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "File " + errorFile + " is not found, play may be corrupted!",
+                        ButtonType.CLOSE, bt);
+
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.CLOSE){
+                    return;
+                } else {
+                    Runtime.getRuntime().exec("explorer " + dir);
+                }
+            }
+        }
+
     }
 
     @FXML
@@ -170,24 +224,14 @@ public class SelectPlayController implements Initializable{
     }
 
     private void loadMixer(MouseEvent event, String name) throws IOException {
-        if (firstrecent.getText() != null && !Objects.equals(firstrecent.getText().trim(), "")){
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("mixer.fxml"));
-            Parent root = (Parent) loader.load();
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Rectangle2D bounds = Screen.getScreens().get(0).getVisualBounds();
-            stage.setX(bounds.getMinX());
-            stage.setY(bounds.getMinY());
-
-            Platform.runLater(() -> {
-                stage.setFullScreen(false);
-                stage.setFullScreen(true);
-
-                scene = new Scene(root);
-
-                stage.setScene(scene);
-                stage.show();
-            });
-
+        if (!Objects.equals(name, "")){
+            MainApp.NAME = name;
+            Parent root = FXMLLoader.load(getClass().getResource("mixer.fxml"));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setFullScreen(true);
+            stage.show();
+            ((Node)(event.getSource())).getScene().getWindow().hide();
         }
     }
 

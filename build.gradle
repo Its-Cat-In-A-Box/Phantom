@@ -7,10 +7,14 @@ plugins {
 }
 
 group 'ber.soundboard'
-version '1'
+version '1.0'
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://clojars.org/repo/"
+    }
+
 }
 
 ext {
@@ -55,7 +59,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
     implementation 'com.google.code.gson:gson:2.10.1'
-
 }
 
 test {

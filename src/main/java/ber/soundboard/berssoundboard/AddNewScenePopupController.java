@@ -64,7 +64,7 @@ public class AddNewScenePopupController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Gson gson = new Gson();
-        File mixerConfigFile = new File("D:\\CodingFiles\\berssoundboard2.0\\build\\jpackage\\app\\data\\balls\\balls.json");
+        File mixerConfigFile = new File(System.getProperty("user.dir") + "\\data\\" + MainApp.NAME + "\\" + MainApp.NAME + ".json");
         JsonReader reader;
         try {
             reader = new JsonReader(new FileReader(mixerConfigFile));

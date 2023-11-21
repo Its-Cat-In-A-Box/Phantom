@@ -31,20 +31,20 @@
          </children>
       </AnchorPane>
       <Label layoutX="7.0" layoutY="6.0" prefHeight="18.0" prefWidth="66.0" text="Select a play" textFill="WHITE" />
-      <Button id="closebutton" fx:id="closeButton" layoutX="574.0" layoutY="2.0" mnemonicParsing="false" onAction="#onMouseClickedExitButton" onMouseEntered="#onMouseEnteredExitButton" onMouseExited="#onMouseExitedExitButton" style="-fx-background-color: null; -fx-border-radius: 0;" stylesheets="@styles.css" text="X" textFill="WHITE" />
+      <Button id="closebutton" fx:id="closeButton" layoutX="574.0" layoutY="2.0" mnemonicParsing="false" onAction="#onMouseClickedExitButton" onMouseEntered="#onMouseEnteredExitButton" onMouseExited="#onMouseExitedExitButton" style="-fx-background-color: null; -fx-border-radius: 0;" text="X" textFill="WHITE" />
       <Label layoutX="226.0" layoutY="53.0" text="Welcome back" textFill="WHITE">
          <font>
             <Font size="23.0" />
          </font>
       </Label>
-      <Label id="qotd" fx:id="qotd" alignment="CENTER" contentDisplay="CENTER" layoutY="87.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="18.0" prefWidth="600.0" style="-fx-alignment: center;" stylesheets="@styles.css" text="qotd" textAlignment="CENTER" textFill="WHITE">
+      <Label id="qotd" fx:id="qotd" alignment="CENTER" contentDisplay="CENTER" layoutY="87.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="18.0" prefWidth="600.0" style="-fx-alignment: center;"  text="qotd" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="System Italic" size="12.0" />
          </font>
       </Label>
       <Line endX="100.0" layoutX="227.0" layoutY="240.0" rotate="90.0" startX="-100.0" stroke="WHITE" />
       <Label layoutX="238.0" layoutY="140.0" text="Recent Plays" textFill="WHITE" />
-      <Button fx:id="firstrecent" layoutX="274.0" layoutY="178.0" mnemonicParsing="false" onMouseClicked="#onFirstRecentClicked" style="-fx-background-color: null;" text="balls" textFill="WHITE" />
+      <Button fx:id="firstrecent" layoutX="274.0" layoutY="178.0" mnemonicParsing="false" onMouseClicked="#onFirstRecentClicked" style="-fx-background-color: null;" text="play1" textFill="WHITE" />
       <Button fx:id="secondrecent" layoutX="274.0" layoutY="209.0" mnemonicParsing="false" onMouseClicked="#onSecondRecentClicked" style="-fx-background-color: null;" textFill="WHITE" />
       <Button fx:id="thirdrecent" layoutX="274.0" layoutY="243.0" mnemonicParsing="false" onMouseClicked="#onThirdRecentClicked" style="-fx-background-color: null;" textFill="WHITE" />
    </children>

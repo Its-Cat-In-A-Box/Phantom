@@ -1,486 +1,1123 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="rootPane" minHeight="1080.0" minWidth="1920.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #383838;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ber.soundboard.berssoundboard.MixerController">
-   <children>
-      <FlowPane layoutX="2.0" layoutY="48.0" prefHeight="1042.0" prefWidth="1870.0">
-         <children>
-            <AnchorPane prefHeight="1040.0" prefWidth="1391.0" style="-fx-background-color: #202020;">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="666.0" prefWidth="1000.0" style="-fx-background-color: #454545;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ber.soundboard.berssoundboard.MixerController">
+   <top>
+      <BorderPane prefHeight="20.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <left>
+            <Label text="Title" textFill="WHITE" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <Label fx:id="mixerCloseButton" onMouseEntered="#onMouseEnteredExitButton" onMouseExited="#onMouseExitedExitButton" onMousePressed="#onMousePressedExitButton" text="X" textFill="WHITE" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </Label>
+         </right>
+      </BorderPane>
+   </top>
+   <center>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: null;" BorderPane.alignment="CENTER">
+         <center>
+            <GridPane style="-fx-background-color: #202020;" BorderPane.alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="206.8" minHeight="10.0" prefHeight="26.399983596801746" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="272.80000610351567" minHeight="0.0" prefHeight="262.4000183105469" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="140.8" minHeight="10.0" prefHeight="90.39998168945311" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="135.19998779296878" minHeight="10.0" prefHeight="110.40004882812497" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="144.60001220703123" minHeight="10.0" prefHeight="99.99995117187495" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="67.79996337890623" minHeight="2.1999877929687273" prefHeight="31.39996337890625" vgrow="SOMETIMES" />
+              </rowConstraints>
                <children>
-                  <Label layoutX="11.0" layoutY="5.0" text="Mixer" textFill="WHITE">
-                     <font>
-                        <Font size="19.0" />
-                     </font>
-                  </Label>
-                  <GridPane alignment="CENTER" layoutX="83.0" layoutY="130.0" prefHeight="825.0" prefWidth="1245.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints maxHeight="405.888916015625" minHeight="10.0" prefHeight="52.77778625488281" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="791.3333282470703" minHeight="10.0" prefHeight="347.77783203125" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="791.3333282470703" minHeight="10.0" prefHeight="127.77777099609375" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="791.3333282470703" minHeight="10.0" prefHeight="141.88887532552081" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="791.3333282470703" minHeight="10.0" prefHeight="214.77779134114587" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="791.3333282470703" minHeight="10.0" prefHeight="83.00006103515625" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="137.0" style="-fx-background-color: #4f2128;" text="Channel 1" textFill="WHITE">
+                  <BorderPane fx:id="channel1FreeButton" prefHeight="43.0" prefWidth="106.0" style="-fx-background-color: #2d2f3b;" GridPane.rowIndex="5">
+                     <center>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Free" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
+                     <top>
+                        <Label text="Transitioner" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="16.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="22.0" prefHeight="17.0" prefWidth="137.0" style="-fx-background-color: #4f2128;" text="Channel 9" textFill="WHITE" GridPane.columnIndex="8">
+                     </top>
+                     <center>
+                        <GridPane prefHeight="74.0" prefWidth="106.0" BorderPane.alignment="CENTER">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="60.4" minHeight="10.0" prefHeight="60.4" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="38.8000244140625" minHeight="10.0" prefHeight="28.4" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <GridPane>
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label text="Volume" textFill="WHITE" />
+                                    <Label text="Time" textFill="WHITE" GridPane.rowIndex="1" />
+                                    <TextField fx:id="channel1TransitionerVol" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                    <TextField fx:id="channel1TransitionerTime" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                 </children>
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin>
+                              </GridPane>
+                              <BorderPane fx:id="channel1TransitionerButton" prefHeight="19.0" prefWidth="106.0" style="-fx-background-color: #70c481;" GridPane.rowIndex="1">
+                                 <center>
+                                    <Label text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                                 </center>
+                              </BorderPane>
+                           </children>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+                     <top>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="22.0" prefWidth="88.0" text="Next Transition" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="16.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="22.0" prefHeight="17.0" prefWidth="137.0" style="-fx-background-color: #4f2128;" text="Channel 8" textFill="WHITE" GridPane.columnIndex="7">
+                     </top>
+                     <center>
+                        <GridPane prefHeight="46.0" prefWidth="94.0" BorderPane.alignment="CENTER">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="66.00003662109376" minHeight="10.0" prefHeight="33.39997749328613" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="42.79996337890625" minHeight="10.0" prefHeight="33.40002250671387" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Volume: " textFill="WHITE" />
+                              <Label text="Time: " textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel1PredeterTransVol" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="0" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel1PredeterTransTime" text="0 s" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                     <bottom>
+                        <BorderPane fx:id="channel1PredeterTransButton" prefHeight="23.0" prefWidth="94.0" style="-fx-background-color: #70c481;" BorderPane.alignment="CENTER">
+                           <center>
+                              <Label alignment="CENTER" contentDisplay="CENTER" text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                           </center>
+                        </BorderPane>
+                     </bottom>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </BorderPane>
+                  <BorderPane prefHeight="97.0" prefWidth="94.0" GridPane.rowIndex="2">
+                     <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Sound:" textFill="WHITE" />
+                              <Label text="Cue:" textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel1Sound" text="N/A" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel1Cue" text="N/A" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                     <center>
+                        <Slider fx:id="channel1Slider" blockIncrement="1.0" majorTickUnit="20.0" minorTickCount="4" orientation="VERTICAL" prefHeight="270.0" prefWidth="41.0" showTickLabels="true" showTickMarks="true" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane fx:id="channel1PlayButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #4f2128;">
+                     <center>
+                        <Label text="Channel 1" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane fx:id="channel2PlayButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #4f2128;" GridPane.columnIndex="1">
+                     <center>
+                        <Label text="Channel 2" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane fx:id="channel7PlayButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #4f2128;" GridPane.columnIndex="6">
+                     <center>
+                        <Label text="Channel 7" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane fx:id="channel6PlayButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #4f2128;" GridPane.columnIndex="5">
+                     <center>
+                        <Label text="Channel 6" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane fx:id="channel5PlayButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #4f2128;" GridPane.columnIndex="4">
+                     <center>
+                        <Label text="Channel 5" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane fx:id="channel4PlayButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #4f2128;" GridPane.columnIndex="3">
+                     <center>
+                        <Label text="Channel 4" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane fx:id="channel3PlayButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #4f2128;" GridPane.columnIndex="2">
+                     <center>
+                        <Label text="Channel 3" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane fx:id="channel8PlayButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #4f2128;" GridPane.columnIndex="7">
+                     <center>
+                        <Label text="Channel 8" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <center>
+                        <Slider fx:id="channel2Slider" blockIncrement="1.0" majorTickUnit="20.0" minorTickCount="4" orientation="VERTICAL" prefHeight="270.0" prefWidth="41.0" showTickLabels="true" showTickMarks="true" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <center>
+                        <Slider fx:id="channel3Slider" blockIncrement="1.0" majorTickUnit="20.0" minorTickCount="4" orientation="VERTICAL" prefHeight="270.0" prefWidth="41.0" showTickLabels="true" showTickMarks="true" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="1">
+                     <center>
+                        <Slider fx:id="channel8Slider" blockIncrement="1.0" majorTickUnit="20.0" minorTickCount="4" orientation="VERTICAL" prefHeight="270.0" prefWidth="41.0" showTickLabels="true" showTickMarks="true" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1">
+                     <center>
+                        <Slider fx:id="channel7Slider" blockIncrement="1.0" majorTickUnit="20.0" minorTickCount="4" orientation="VERTICAL" prefHeight="270.0" prefWidth="41.0" showTickLabels="true" showTickMarks="true" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                     <center>
+                        <Slider fx:id="channel6Slider" blockIncrement="1.0" majorTickUnit="20.0" minorTickCount="4" orientation="VERTICAL" prefHeight="270.0" prefWidth="41.0" showTickLabels="true" showTickMarks="true" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                     <center>
+                        <Slider fx:id="channel5Slider" blockIncrement="1.0" majorTickUnit="20.0" minorTickCount="4" orientation="VERTICAL" prefHeight="270.0" prefWidth="41.0" showTickLabels="true" showTickMarks="true" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                     <center>
+                        <Slider fx:id="channel4Slider" blockIncrement="1.0" majorTickUnit="20.0" minorTickCount="4" orientation="VERTICAL" prefHeight="270.0" prefWidth="41.0" showTickLabels="true" showTickMarks="true" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="97.0" prefWidth="94.0" GridPane.columnIndex="7" GridPane.rowIndex="2">
+                     <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Sound:" textFill="WHITE" />
+                              <Label text="Cue:" textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel8Sound" text="N/A" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel8Cue" text="N/A" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="97.0" prefWidth="94.0" GridPane.columnIndex="6" GridPane.rowIndex="2">
+                     <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Sound:" textFill="WHITE" />
+                              <Label text="Cue:" textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel7Sound" text="N/A" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel7Cue" text="N/A" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="97.0" prefWidth="94.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
+                     <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Sound:" textFill="WHITE" />
+                              <Label text="Cue:" textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel6Sound" text="N/A" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel6Cue" text="N/A" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="97.0" prefWidth="94.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                     <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Sound:" textFill="WHITE" />
+                              <Label text="Cue:" textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel5Sound" text="N/A" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel5Cue" text="N/A" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="97.0" prefWidth="94.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                     <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Sound:" textFill="WHITE" />
+                              <Label text="Cue:" textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel4Sound" text="N/A" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel4Cue" text="N/A" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="97.0" prefWidth="94.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Sound:" textFill="WHITE" />
+                              <Label text="Cue:" textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel3Sound" text="N/A" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel3Cue" text="N/A" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="97.0" prefWidth="94.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Sound:" textFill="WHITE" />
+                              <Label text="Cue:" textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel2Sound" text="N/A" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel2Cue" text="N/A" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="3">
+                     <top>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="22.0" prefWidth="88.0" text="Next Transition" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="16.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="22.0" prefHeight="17.0" prefWidth="137.0" style="-fx-background-color: #4f2128;" text="Channel 7" textFill="WHITE" GridPane.columnIndex="6">
+                     </top>
+                     <center>
+                        <GridPane prefHeight="46.0" prefWidth="94.0" BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="66.00003662109376" minHeight="10.0" prefHeight="33.39997749328613" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="42.79996337890625" minHeight="10.0" prefHeight="33.40002250671387" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Volume: " textFill="WHITE" />
+                              <Label text="Time: " textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel8PredeterTransVol" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="0" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel8PredeterTransTime" text="0 s" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                     <bottom>
+                        <BorderPane fx:id="channel8PredeterTransButton" prefHeight="23.0" prefWidth="94.0" style="-fx-background-color: #70c481;" BorderPane.alignment="CENTER">
+                           <center>
+                              <Label alignment="CENTER" contentDisplay="CENTER" text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                           </center>
+                        </BorderPane>
+                     </bottom>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3">
+                     <top>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="22.0" prefWidth="88.0" text="Next Transition" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="16.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="22.0" prefHeight="17.0" prefWidth="137.0" style="-fx-background-color: #4f2128;" text="Channel 6" textFill="WHITE" GridPane.columnIndex="5">
+                     </top>
+                     <center>
+                        <GridPane prefHeight="46.0" prefWidth="94.0" BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="66.00003662109376" minHeight="10.0" prefHeight="33.39997749328613" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="42.79996337890625" minHeight="10.0" prefHeight="33.40002250671387" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Volume: " textFill="WHITE" />
+                              <Label text="Time: " textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel7PredeterTransVol" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="0" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel7PredeterTransTime" text="0 s" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                     <bottom>
+                        <BorderPane fx:id="channel7PredeterTransButton" prefHeight="23.0" prefWidth="94.0" style="-fx-background-color: #70c481;" BorderPane.alignment="CENTER">
+                           <center>
+                              <Label alignment="CENTER" contentDisplay="CENTER" text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                           </center>
+                        </BorderPane>
+                     </bottom>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
+                     <top>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="22.0" prefWidth="88.0" text="Next Transition" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="16.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="22.0" prefHeight="17.0" prefWidth="137.0" style="-fx-background-color: #4f2128;" text="Channel 5" textFill="WHITE" GridPane.columnIndex="4">
+                     </top>
+                     <center>
+                        <GridPane prefHeight="46.0" prefWidth="94.0" BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="66.00003662109376" minHeight="10.0" prefHeight="33.39997749328613" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="42.79996337890625" minHeight="10.0" prefHeight="33.40002250671387" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Volume: " textFill="WHITE" />
+                              <Label text="Time: " textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel6PredeterTransVol" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="0" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel6PredeterTransTime" text="0 s" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                     <bottom>
+                        <BorderPane fx:id="channel6PredeterTransButton" prefHeight="23.0" prefWidth="94.0" style="-fx-background-color: #70c481;" BorderPane.alignment="CENTER">
+                           <center>
+                              <Label alignment="CENTER" contentDisplay="CENTER" text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                           </center>
+                        </BorderPane>
+                     </bottom>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                     <top>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="22.0" prefWidth="88.0" text="Next Transition" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="16.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="22.0" prefHeight="17.0" prefWidth="137.0" style="-fx-background-color: #4f2128;" text="Channel 4" textFill="WHITE" GridPane.columnIndex="3">
+                     </top>
+                     <center>
+                        <GridPane prefHeight="46.0" prefWidth="94.0" BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="66.00003662109376" minHeight="10.0" prefHeight="33.39997749328613" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="42.79996337890625" minHeight="10.0" prefHeight="33.40002250671387" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Volume: " textFill="WHITE" />
+                              <Label text="Time: " textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel5PredeterTransVol" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="0" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel5PredeterTransTime" text="0 s" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                     <bottom>
+                        <BorderPane fx:id="channel5PredeterTransButton" prefHeight="23.0" prefWidth="94.0" style="-fx-background-color: #70c481;" BorderPane.alignment="CENTER">
+                           <center>
+                              <Label alignment="CENTER" contentDisplay="CENTER" text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                           </center>
+                        </BorderPane>
+                     </bottom>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                     <top>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="22.0" prefWidth="88.0" text="Next Transition" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="16.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="22.0" prefHeight="17.0" prefWidth="137.0" style="-fx-background-color: #4f2128;" text="Channel 3" textFill="WHITE" GridPane.columnIndex="2">
+                     </top>
+                     <center>
+                        <GridPane prefHeight="46.0" prefWidth="94.0" BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="66.00003662109376" minHeight="10.0" prefHeight="33.39997749328613" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="42.79996337890625" minHeight="10.0" prefHeight="33.40002250671387" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Volume: " textFill="WHITE" />
+                              <Label text="Time: " textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel4PredeterTransVol" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="0" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel4PredeterTransTime" text="0 s" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                     <bottom>
+                        <BorderPane fx:id="channel4PredeterTransButton" prefHeight="23.0" prefWidth="94.0" style="-fx-background-color: #70c481;" BorderPane.alignment="CENTER">
+                           <center>
+                              <Label alignment="CENTER" contentDisplay="CENTER" text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                           </center>
+                        </BorderPane>
+                     </bottom>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                     <top>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="22.0" prefWidth="88.0" text="Next Transition" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="16.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="22.0" prefHeight="17.0" prefWidth="137.0" style="-fx-background-color: #4f2128;" text="Channel 2" textFill="WHITE" GridPane.columnIndex="1">
+                     </top>
+                     <center>
+                        <GridPane prefHeight="46.0" prefWidth="94.0" BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="66.00003662109376" minHeight="10.0" prefHeight="33.39997749328613" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="42.79996337890625" minHeight="10.0" prefHeight="33.40002250671387" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Volume: " textFill="WHITE" />
+                              <Label text="Time: " textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel3PredeterTransVol" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="0" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel3PredeterTransTime" text="0 s" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                     <bottom>
+                        <BorderPane fx:id="channel3PredeterTransButton" prefHeight="23.0" prefWidth="94.0" style="-fx-background-color: #70c481;" BorderPane.alignment="CENTER">
+                           <center>
+                              <Label alignment="CENTER" contentDisplay="CENTER" text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                           </center>
+                        </BorderPane>
+                     </bottom>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <top>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="22.0" prefWidth="88.0" text="Next Transition" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="16.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Slider blockIncrement="1.0" orientation="VERTICAL" prefHeight="470.0" prefWidth="139.0" showTickLabels="true" showTickMarks="true" GridPane.rowIndex="1" />
-                        <Slider blockIncrement="1.0" layoutX="7.0" layoutY="45.0" orientation="VERTICAL" prefHeight="470.0" prefWidth="139.0" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="7" GridPane.rowIndex="1" />
-                        <Slider blockIncrement="1.0" layoutX="7.0" layoutY="7.0" orientation="VERTICAL" prefHeight="470.0" prefWidth="139.0" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                        <Slider blockIncrement="1.0" layoutX="7.0" layoutY="7.0" orientation="VERTICAL" prefHeight="470.0" prefWidth="139.0" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                        <Slider blockIncrement="1.0" layoutX="7.0" layoutY="7.0" orientation="VERTICAL" prefHeight="470.0" prefWidth="139.0" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                        <Slider blockIncrement="1.0" layoutX="7.0" layoutY="7.0" orientation="VERTICAL" prefHeight="470.0" prefWidth="139.0" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <Slider blockIncrement="1.0" layoutX="7.0" layoutY="7.0" orientation="VERTICAL" prefHeight="470.0" prefWidth="139.0" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Slider blockIncrement="1.0" layoutX="7.0" layoutY="7.0" orientation="VERTICAL" prefHeight="470.0" prefWidth="139.0" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Slider blockIncrement="1.0" layoutX="980.0" layoutY="45.0" orientation="VERTICAL" prefHeight="470.0" prefWidth="139.0" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="8" GridPane.rowIndex="1" />
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="139.0" style="-fx-background-color: #2d2f3b;" text="Free" textFill="WHITE" GridPane.rowIndex="5">
+                     </top>
+                     <center>
+                        <GridPane prefHeight="46.0" prefWidth="94.0" BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="66.00003662109376" minHeight="10.0" prefHeight="33.39997749328613" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="42.79996337890625" minHeight="10.0" prefHeight="33.40002250671387" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Volume: " textFill="WHITE" />
+                              <Label text="Time: " textFill="WHITE" GridPane.rowIndex="1" />
+                              <Label fx:id="channel2PredeterTransVol" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="0" textFill="WHITE" GridPane.columnIndex="1" />
+                              <Label fx:id="channel2PredeterTransTime" text="0 s" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
+                     </center>
+                     <bottom>
+                        <BorderPane fx:id="channel2PredeterTransButton" prefHeight="23.0" prefWidth="94.0" style="-fx-background-color: #70c481;" BorderPane.alignment="CENTER">
+                           <center>
+                              <Label alignment="CENTER" contentDisplay="CENTER" text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                           </center>
+                        </BorderPane>
+                     </bottom>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="4">
+                     <top>
+                        <Label text="Transitioner" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="17.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="11.0" prefHeight="41.0" prefWidth="139.0" style="-fx-background-color: #2d2f3b;" text="Free" textFill="WHITE" GridPane.columnIndex="8" GridPane.rowIndex="5">
+                     </top>
+                     <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="60.4" minHeight="10.0" prefHeight="60.4" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="38.8000244140625" minHeight="10.0" prefHeight="28.4" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label text="Volume" textFill="WHITE" />
+                                    <Label text="Time" textFill="WHITE" GridPane.rowIndex="1" />
+                                    <TextField fx:id="channel8TransitionerVol" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                    <TextField fx:id="channel8TransitionerTime" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                 </children>
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin>
+                              </GridPane>
+                              <BorderPane fx:id="channel8TransitionerButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #70c481;" GridPane.rowIndex="1">
+                                 <center>
+                                    <Label text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                                 </center>
+                              </BorderPane>
+                           </children>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4">
+                     <top>
+                        <Label text="Transitioner" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="17.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="11.0" prefHeight="41.0" prefWidth="139.0" style="-fx-background-color: #2d2f3b;" text="Free" textFill="WHITE" GridPane.columnIndex="7" GridPane.rowIndex="5">
+                     </top>
+                     <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="60.4" minHeight="10.0" prefHeight="60.4" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="38.8000244140625" minHeight="10.0" prefHeight="28.4" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label text="Volume" textFill="WHITE" />
+                                    <Label text="Time" textFill="WHITE" GridPane.rowIndex="1" />
+                                    <TextField fx:id="channel7TransitionerVol" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                    <TextField fx:id="channel7TransitionerTime" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                 </children>
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin>
+                              </GridPane>
+                              <BorderPane fx:id="channel7TransitionerButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #70c481;" GridPane.rowIndex="1">
+                                 <center>
+                                    <Label text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                                 </center>
+                              </BorderPane>
+                           </children>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4">
+                     <top>
+                        <Label text="Transitioner" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="17.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="11.0" prefHeight="41.0" prefWidth="139.0" style="-fx-background-color: #2d2f3b;" text="Free" textFill="WHITE" GridPane.columnIndex="6" GridPane.rowIndex="5">
+                     </top>
+                     <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="60.4" minHeight="10.0" prefHeight="60.4" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="38.8000244140625" minHeight="10.0" prefHeight="28.4" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label text="Volume" textFill="WHITE" />
+                                    <Label text="Time" textFill="WHITE" GridPane.rowIndex="1" />
+                                    <TextField fx:id="channel6TransitionerVol" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                    <TextField fx:id="channel6TransitionerTime" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                 </children>
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin>
+                              </GridPane>
+                              <BorderPane fx:id="channel6TransitionerButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #70c481;" GridPane.rowIndex="1">
+                                 <center>
+                                    <Label text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                                 </center>
+                              </BorderPane>
+                           </children>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                     <top>
+                        <Label text="Transitioner" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="17.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="11.0" prefHeight="41.0" prefWidth="139.0" style="-fx-background-color: #2d2f3b;" text="Free" textFill="WHITE" GridPane.columnIndex="5" GridPane.rowIndex="5">
+                     </top>
+                     <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="60.4" minHeight="10.0" prefHeight="60.4" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="38.8000244140625" minHeight="10.0" prefHeight="28.4" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label text="Volume" textFill="WHITE" />
+                                    <Label text="Time" textFill="WHITE" GridPane.rowIndex="1" />
+                                    <TextField fx:id="channel5TransitionerVol" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                    <TextField fx:id="channel5TransitionerTime" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                 </children>
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin>
+                              </GridPane>
+                              <BorderPane fx:id="channel5TransitionerButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #70c481;" GridPane.rowIndex="1">
+                                 <center>
+                                    <Label text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                                 </center>
+                              </BorderPane>
+                           </children>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                     <top>
+                        <Label text="Transitioner" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="17.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="11.0" prefHeight="41.0" prefWidth="139.0" style="-fx-background-color: #2d2f3b;" text="Free" textFill="WHITE" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                     </top>
+                     <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="60.4" minHeight="10.0" prefHeight="60.4" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="38.8000244140625" minHeight="10.0" prefHeight="28.4" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label text="Volume" textFill="WHITE" />
+                                    <Label text="Time" textFill="WHITE" GridPane.rowIndex="1" />
+                                    <TextField fx:id="channel4TransitionerVol" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                    <TextField fx:id="channel4TransitionerTime" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                 </children>
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin>
+                              </GridPane>
+                              <BorderPane fx:id="channel4TransitionerButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #70c481;" GridPane.rowIndex="1">
+                                 <center>
+                                    <Label text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                                 </center>
+                              </BorderPane>
+                           </children>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                     <top>
+                        <Label text="Transitioner" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="17.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="11.0" prefHeight="41.0" prefWidth="139.0" style="-fx-background-color: #2d2f3b;" text="Free" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                     </top>
+                     <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="60.4" minHeight="10.0" prefHeight="60.4" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="38.8000244140625" minHeight="10.0" prefHeight="28.4" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label text="Volume" textFill="WHITE" />
+                                    <Label text="Time" textFill="WHITE" GridPane.rowIndex="1" />
+                                    <TextField fx:id="channel3TransitionerVol" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                    <TextField fx:id="channel3TransitionerTime" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                 </children>
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin>
+                              </GridPane>
+                              <BorderPane fx:id="channel3TransitionerButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #70c481;" GridPane.rowIndex="1">
+                                 <center>
+                                    <Label text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                                 </center>
+                              </BorderPane>
+                           </children>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <top>
+                        <Label text="Transitioner" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
-                              <Font size="17.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="11.0" prefHeight="41.0" prefWidth="139.0" style="-fx-background-color: #2d2f3b;" text="Free" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="5">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="11.0" prefHeight="41.0" prefWidth="139.0" style="-fx-background-color: #2d2f3b;" text="Free" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Label>
-                        <FlowPane columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+                     </top>
+                     <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="60.4" minHeight="10.0" prefHeight="60.4" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="38.8000244140625" minHeight="10.0" prefHeight="28.4" vgrow="SOMETIMES" />
+                           </rowConstraints>
                            <children>
-                              <ProgressBar prefHeight="18.0" prefWidth="139.0" progress="0.58" style="-fx-border-color: gray;" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="138.0" text="xx/xx" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="139.0" text="Sound:" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="27.0" prefWidth="139.0" text="Cue:" textFill="WHITE" />
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label text="Volume" textFill="WHITE" />
+                                    <Label text="Time" textFill="WHITE" GridPane.rowIndex="1" />
+                                    <TextField fx:id="channel2TransitionerVol" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                    <TextField fx:id="channel2TransitionerTime" style="-fx-background-color: #303030; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin></TextField>
+                                 </children>
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin>
+                              </GridPane>
+                              <BorderPane fx:id="channel2TransitionerButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #70c481;" GridPane.rowIndex="1">
+                                 <center>
+                                    <Label text="Transit" textFill="WHITE" BorderPane.alignment="CENTER" />
+                                 </center>
+                              </BorderPane>
                            </children>
-                        </FlowPane>
-                        <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
-                           <children>
-                              <Label prefHeight="17.0" prefWidth="139.0" text="Next Transition" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="138.0" text="Volume:" textFill="WHITE" />
-                              <Label layoutX="10.0" layoutY="36.0" prefHeight="17.0" prefWidth="138.0" text="Time:" textFill="WHITE" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="53.0" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
-                           <children>
-                              <Label prefHeight="26.0" prefWidth="135.0" text="Transitioner" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="108.0" text="New volume" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label layoutX="10.0" layoutY="40.0" prefHeight="17.0" prefWidth="108.0" text="Time" textFill="WHITE" />
-                              <TextField layoutX="118.0" layoutY="36.0" prefHeight="25.0" prefWidth="28.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane columnHalignment="CENTER" layoutX="7.0" layoutY="363.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <children>
-                              <ProgressBar prefHeight="18.0" prefWidth="139.0" progress="0.58" style="-fx-border-color: gray;" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="138.0" text="xx/xx" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="139.0" text="Sound:" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="27.0" prefWidth="139.0" text="Cue:" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane layoutX="7.0" layoutY="467.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                           <children>
-                              <Label prefHeight="17.0" prefWidth="139.0" text="Next Transition" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="138.0" text="Volume:" textFill="WHITE" />
-                              <Label layoutX="10.0" layoutY="36.0" prefHeight="17.0" prefWidth="138.0" text="Time:" textFill="WHITE" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="53.0" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane layoutX="7.0" layoutY="585.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                           <children>
-                              <Label prefHeight="26.0" prefWidth="135.0" text="Transitioner" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="108.0" text="New volume" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label layoutX="10.0" layoutY="40.0" prefHeight="17.0" prefWidth="108.0" text="Time" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane columnHalignment="CENTER" layoutX="146.0" layoutY="363.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                           <children>
-                              <ProgressBar prefHeight="18.0" prefWidth="139.0" progress="0.58" style="-fx-border-color: gray;" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="138.0" text="xx/xx" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="139.0" text="Sound:" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="27.0" prefWidth="139.0" text="Cue:" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane layoutX="146.0" layoutY="467.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                           <children>
-                              <Label prefHeight="17.0" prefWidth="139.0" text="Next Transition" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="138.0" text="Volume:" textFill="WHITE" />
-                              <Label layoutX="10.0" layoutY="36.0" prefHeight="17.0" prefWidth="138.0" text="Time:" textFill="WHITE" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="53.0" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane layoutX="146.0" layoutY="585.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                           <children>
-                              <Label prefHeight="26.0" prefWidth="135.0" text="Transitioner" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="108.0" text="New volume" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label layoutX="10.0" layoutY="40.0" prefHeight="17.0" prefWidth="108.0" text="Time" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                           <children>
-                              <ProgressBar prefHeight="18.0" prefWidth="139.0" progress="0.58" style="-fx-border-color: gray;" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="138.0" text="xx/xx" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="139.0" text="Sound:" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="27.0" prefWidth="139.0" text="Cue:" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                           <children>
-                              <ProgressBar prefHeight="18.0" prefWidth="139.0" progress="0.58" style="-fx-border-color: gray;" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="138.0" text="xx/xx" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="139.0" text="Sound:" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="27.0" prefWidth="139.0" text="Cue:" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
-                           <children>
-                              <ProgressBar prefHeight="18.0" prefWidth="139.0" progress="0.58" style="-fx-border-color: gray;" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="138.0" text="xx/xx" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="139.0" text="Sound:" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="27.0" prefWidth="139.0" text="Cue:" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                           <children>
-                              <Label prefHeight="17.0" prefWidth="139.0" text="Next Transition" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="138.0" text="Volume:" textFill="WHITE" />
-                              <Label layoutX="10.0" layoutY="36.0" prefHeight="17.0" prefWidth="138.0" text="Time:" textFill="WHITE" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="53.0" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
-                           <children>
-                              <Label prefHeight="17.0" prefWidth="139.0" text="Next Transition" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="138.0" text="Volume:" textFill="WHITE" />
-                              <Label layoutX="10.0" layoutY="36.0" prefHeight="17.0" prefWidth="138.0" text="Time:" textFill="WHITE" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="53.0" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
-                           <children>
-                              <Label prefHeight="17.0" prefWidth="139.0" text="Next Transition" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="138.0" text="Volume:" textFill="WHITE" />
-                              <Label layoutX="10.0" layoutY="36.0" prefHeight="17.0" prefWidth="138.0" text="Time:" textFill="WHITE" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="53.0" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                           <children>
-                              <Label prefHeight="26.0" prefWidth="135.0" text="Transitioner" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="108.0" text="New volume" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label layoutX="10.0" layoutY="40.0" prefHeight="17.0" prefWidth="108.0" text="Time" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
-                           <children>
-                              <Label prefHeight="26.0" prefWidth="135.0" text="Transitioner" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="108.0" text="New volume" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label layoutX="10.0" layoutY="40.0" prefHeight="17.0" prefWidth="108.0" text="Time" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4">
-                           <children>
-                              <Label prefHeight="26.0" prefWidth="135.0" text="Transitioner" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="108.0" text="New volume" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label layoutX="10.0" layoutY="40.0" prefHeight="17.0" prefWidth="108.0" text="Time" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2">
-                           <children>
-                              <ProgressBar prefHeight="18.0" prefWidth="139.0" progress="0.58" style="-fx-border-color: gray;" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="138.0" text="xx/xx" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="139.0" text="Sound:" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="27.0" prefWidth="139.0" text="Cue:" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="2">
-                           <children>
-                              <ProgressBar prefHeight="18.0" prefWidth="139.0" progress="0.58" style="-fx-border-color: gray;" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="138.0" text="xx/xx" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="139.0" text="Sound:" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="27.0" prefWidth="139.0" text="Cue:" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="2">
-                           <children>
-                              <ProgressBar prefHeight="18.0" prefWidth="139.0" progress="0.58" style="-fx-border-color: gray;" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="138.0" text="xx/xx" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="139.0" text="Sound:" textFill="WHITE" />
-                              <Label contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="27.0" prefWidth="139.0" text="Cue:" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3">
-                           <children>
-                              <Label prefHeight="17.0" prefWidth="139.0" text="Next Transition" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="138.0" text="Volume:" textFill="WHITE" />
-                              <Label layoutX="10.0" layoutY="36.0" prefHeight="17.0" prefWidth="138.0" text="Time:" textFill="WHITE" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="53.0" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="3">
-                           <children>
-                              <Label prefHeight="17.0" prefWidth="139.0" text="Next Transition" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="138.0" text="Volume:" textFill="WHITE" />
-                              <Label layoutX="10.0" layoutY="36.0" prefHeight="17.0" prefWidth="138.0" text="Time:" textFill="WHITE" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="53.0" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="3">
-                           <children>
-                              <Label prefHeight="17.0" prefWidth="139.0" text="Next Transition" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="138.0" text="Volume:" textFill="WHITE" />
-                              <Label layoutX="10.0" layoutY="36.0" prefHeight="17.0" prefWidth="138.0" text="Time:" textFill="WHITE" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="53.0" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4">
-                           <children>
-                              <Label prefHeight="26.0" prefWidth="135.0" text="Transitioner" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="108.0" text="New volume" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label layoutX="10.0" layoutY="40.0" prefHeight="17.0" prefWidth="108.0" text="Time" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="4">
-                           <children>
-                              <Label prefHeight="26.0" prefWidth="135.0" text="Transitioner" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="108.0" text="New volume" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label layoutX="10.0" layoutY="40.0" prefHeight="17.0" prefWidth="108.0" text="Time" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                        <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="4">
-                           <children>
-                              <Label prefHeight="26.0" prefWidth="135.0" text="Transitioner" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="17.0" />
-                                 </font>
-                              </Label>
-                              <Label prefHeight="17.0" prefWidth="108.0" text="New volume" textFill="WHITE" />
-                              <TextField prefHeight="25.0" prefWidth="28.0" />
-                              <Label layoutX="10.0" layoutY="40.0" prefHeight="17.0" prefWidth="108.0" text="Time" textFill="WHITE" />
-                              <TextField layoutX="118.0" layoutY="36.0" prefHeight="25.0" prefWidth="28.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="138.0" style="-fx-background-color: #70c481;" text="Transit" textAlignment="CENTER" textFill="WHITE" />
-                           </children>
-                        </FlowPane>
-                     </children>
-                  </GridPane>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
+                  <BorderPane fx:id="channel8FreeButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2d2f3b;" GridPane.columnIndex="7" GridPane.rowIndex="5">
+                     <center>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Free" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane fx:id="channel7FreeButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2d2f3b;" GridPane.columnIndex="6" GridPane.rowIndex="5">
+                     <center>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Free" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane fx:id="channel6FreeButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2d2f3b;" GridPane.columnIndex="5" GridPane.rowIndex="5">
+                     <center>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Free" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane fx:id="channel5FreeButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2d2f3b;" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                     <center>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Free" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane fx:id="channel4FreeButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2d2f3b;" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                     <center>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Free" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane fx:id="channel3FreeButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2d2f3b;" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                     <center>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Free" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane fx:id="channel2FreeButton" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2d2f3b;" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <center>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Free" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
                </children>
-            </AnchorPane>
-            <AnchorPane prefHeight="1040.0" prefWidth="325.0" style="-fx-background-color: #202020;">
+            </GridPane>
+         </center>
+         <right>
+            <ScrollPane fx:id="SoundListPane" hbarPolicy="NEVER" prefHeight="362.0" prefWidth="154.0" style="-fx-background-color: #383838; -fx-background: #383838;" BorderPane.alignment="CENTER">
+               <content>
+                  <GridPane fx:id="soundCueGridPane" maxHeight="1.7976931348623157E308" prefHeight="20.0" prefWidth="154.0" />
+               </content>
+            </ScrollPane>
+         </right>
+         <top>
+            <FlowPane prefHeight="0.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label layoutX="11.0" layoutY="5.0" text="Sound cues" textFill="WHITE">
-                     <font>
-                        <Font size="19.0" />
-                     </font>
+                  <Label prefHeight="26.0" prefWidth="51.0" style="-fx-background-color: #202020;" text="Mixer" textFill="WHITE">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
                   </Label>
-                  <Line endX="203.3333740234375" endY="1.52587890625E-5" layoutX="122.0" layoutY="44.0" startX="-122.0" startY="1.52587890625E-5" stroke="#b7b7b7" />
-                  <AnchorPane layoutX="288.0" layoutY="10.0" prefHeight="21.0" prefWidth="15.0" style="-fx-background-color: null;">
-                     <children>
-                        <ImageView fitHeight="21.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@icons/plus.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </AnchorPane>
+                  <MenuButton fx:id="sceneSelector" mnemonicParsing="false" style="-fx-background-color: null;" text="MenuButton" textFill="WHITE" />
+                  <Label onMousePressed="#onButtonClickNewSound" text="+ Add new sound" textFill="WHITE">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </Label>
+                  <Label layoutX="160.0" layoutY="14.0" onMouseClicked="#addNewCue" text="+ Add new cue" textFill="WHITE">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </Label>
                </children>
-            </AnchorPane>
-         </children>
-      </FlowPane>
-      <Label layoutX="21.0" layoutY="2.0" text="Title" textFill="WHITE">
-         <font>
-            <Font size="17.0" />
-         </font></Label>
-      <Button layoutX="1869.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="43.0" style="-fx-background-color: null;" text="X" textFill="WHITE" />
-   </children>
-</AnchorPane>
+            </FlowPane>
+         </top>
+      </BorderPane>
+   </center>
+</BorderPane>
