@@ -67,10 +67,7 @@ def main():
                 togglePlayPause(cmdArgs[1])
             elif cmdName == "SOUNDADDTOMIXER":
                 print("Client requested to add sound to mixer " + msgRecv)
-                if cmdArgs[5] == "True":  # Fades in
-                    soundAddToMixer(cmdArgs[1], cmdArgs[2], cmdArgs[3], cmdArgs[4], True, cmdArgs[6])
-                else:
-                    soundAddToMixer(cmdArgs[1], cmdArgs[2], cmdArgs[3], cmdArgs[4], False)
+                soundAddToMixer(cmdArgs[1], cmdArgs[2], cmdArgs[3], cmdArgs[4])
             elif cmdName == "STOP":
                 print ("Client requested to stop mixer " + msgRecv)
                 pygame.mixer.Channel(int(cmdArgs[1])).stop()
@@ -136,20 +133,12 @@ def togglePlayPause(channel):
             pauseStatus[channel] = False
 
 
-def soundAddToMixer(channel, soundId, loops, startingVol, fadeIn, fadeInMs=None):
-    if fadeIn:
-        mixerChannel[int(channel)] = {"soundId": soundId,
-                                      "loops": loops,
-                                      "startingVol": startingVol,
-                                      "fadeIn": True,
-                                      "fadeInMs": fadeInMs
-                                      }
-    else:
-        mixerChannel[int(channel)] = {"soundId": soundId,
-                                      "loops": loops,
-                                      "startingVol": startingVol,
-                                      "fadeIn": False,
-                                      }
+def soundAddToMixer(channel, soundId, loops, startingVol):
+    mixerChannel[int(channel)] = {"soundId": soundId,
+                                  "loops": loops,
+                                  "startingVol": startingVol,
+                                  "fadeIn": False,
+                                  }
 
 if __name__ == '__main__':
     main()

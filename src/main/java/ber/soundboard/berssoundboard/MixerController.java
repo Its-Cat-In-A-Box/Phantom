@@ -1,8 +1,7 @@
-package ber.soundboard.berssoundboard;
+ package ber.soundboard.berssoundboard;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -32,6 +31,9 @@ public class MixerController implements Initializable {
     File mixerConfigFile;
 
     //<editor-fold desc="FXML variables">
+    @FXML
+    private Label title;
+
     @FXML
     private ScrollPane SoundListPane;
 
@@ -313,10 +315,12 @@ public class MixerController implements Initializable {
 
     private static MixerJsonObject.PlayScene.SoundConfiguration[] MIXER_CHANNELS =
             new MixerJsonObject.PlayScene.SoundConfiguration[8];
-
-    private static int[] MIXER_CHANNEL_TRANSITION_IDX = new int[]{0,0,0,0,0,0,0,0};
+    private static Iterator<MixerJsonObject.PlayScene.SoundConfiguration.SoundTransition>[] transitionIterator
+            = new Iterator[]{null, null, null, null, null, null, null, null};
 
     private static TimerTask[] transitionTasks = new TimerTask[8];
+
+    private Mixer[] mixer;
 
 
 
@@ -352,18 +356,40 @@ public class MixerController implements Initializable {
         stage.setScene(new Scene(root));
         stage.showAndWait();
 
+        refreshJson();
+        updateSoundCueList();
+    }
+    
+    void refreshJson() throws IOException {
         Gson gson = new Gson();
         FileReader reader = new FileReader(mixerConfigFile);
         mixerJsonObject = gson.fromJson(reader, MixerJsonObject.class);
         reader.close();
-
-        updateSoundCueList();
     }
 
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        mixer = new Mixer[]{
+                new Mixer(channel1PlayButton, channel1PredeterTransButton, channel1TransitionerButton, channel1FreeButton,
+                        channel1Slider, channel1Sound, channel1Cue, channel1PredeterTransVol, channel1PredeterTransTime, channel1TransitionerVol, channel1TransitionerTime),
+                new Mixer(channel2PlayButton, channel2PredeterTransButton, channel2TransitionerButton, channel2FreeButton,
+                        channel2Slider, channel2Sound, channel2Cue, channel2PredeterTransVol, channel2PredeterTransTime, channel2TransitionerVol, channel2TransitionerTime),
+                new Mixer(channel3PlayButton, channel3PredeterTransButton, channel3TransitionerButton, channel3FreeButton,
+                        channel3Slider, channel3Sound, channel3Cue, channel3PredeterTransVol, channel3PredeterTransTime, channel3TransitionerVol, channel3TransitionerTime),
+                new Mixer(channel4PlayButton, channel4PredeterTransButton, channel4TransitionerButton, channel4FreeButton,
+                        channel4Slider, channel4Sound, channel4Cue, channel4PredeterTransVol, channel4PredeterTransTime, channel4TransitionerVol, channel4TransitionerTime),
+                new Mixer(channel5PlayButton, channel5PredeterTransButton, channel5TransitionerButton, channel5FreeButton,
+                        channel5Slider, channel5Sound, channel5Cue, channel5PredeterTransVol, channel5PredeterTransTime, channel5TransitionerVol, channel5TransitionerTime),
+                new Mixer(channel6PlayButton, channel6PredeterTransButton, channel6TransitionerButton, channel6FreeButton,
+                        channel6Slider, channel6Sound, channel6Cue, channel6PredeterTransVol, channel6PredeterTransTime, channel6TransitionerVol, channel6TransitionerTime),
+                new Mixer(channel7PlayButton, channel7PredeterTransButton, channel7TransitionerButton, channel7FreeButton,
+                        channel7Slider, channel7Sound, channel7Cue, channel7PredeterTransVol, channel7PredeterTransTime, channel7TransitionerVol, channel7TransitionerTime),
+                new Mixer(channel8PlayButton, channel8PredeterTransButton, channel8TransitionerButton, channel8FreeButton,
+                        channel8Slider, channel8Sound, channel8Cue, channel8PredeterTransVol, channel8PredeterTransTime, channel8TransitionerVol, channel8TransitionerTime),
+        };
+        title.setText("Phantom - " + MainApp.NAME);
         try {
             MainApp.DOUT.writeUTF("LOADSOUND " + MainApp.NAME);
             MainApp.DOUT.flush();
@@ -375,35 +401,18 @@ public class MixerController implements Initializable {
             throw new RuntimeException(e);
         }
 
-
-
         SoundListPane.setPrefWidth((double) (800 * 77) / 300);
         mixerDir = new File("data", MainApp.NAME);
         mixerDir.setLastModified(System.currentTimeMillis());
 
         mixerConfigFile = new File(System.getProperty("user.dir")+"\\data\\" + MainApp.NAME + "\\" + MainApp.NAME + ".json");
-        Gson gson = new Gson();
-        JsonReader reader;
         try {
-            reader = new JsonReader(new FileReader(mixerConfigFile));
-        } catch (FileNotFoundException e) {
+            refreshJson();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        mixerJsonObject = gson.fromJson(reader, MixerJsonObject.class);
 
-
-        if (mixerJsonObject.scenes != null && mixerJsonObject.scenes.length > 0){
-            for (MixerJsonObject.PlayScene ps : mixerJsonObject.scenes){
-                if (ps.soundConfiguration != null && ps.soundConfiguration.length > 0){
-                    for (MixerJsonObject.PlayScene.SoundConfiguration sc : ps.soundConfiguration){
-                        Arrays.sort(sc.transitions, Comparator.comparingInt(o -> o.transitionId));
-                    }
-                    Arrays.sort(ps.soundConfiguration, Comparator.comparingInt(o -> o.cueId));
-                }
-            }
-            Arrays.sort(mixerJsonObject.scenes, Comparator.comparingInt(o -> o.sceneIdx));
-        }
-
+        sortAll();
 
         try {
             updateSceneList();
@@ -416,572 +425,180 @@ public class MixerController implements Initializable {
             updateSoundCueList();
         }
 
-        //<editor-fold desc="Play Button On Mouse Entered">
-        channel1PlayButton.setOnMouseEntered(event -> channelPlayButtonEnter(channel1PlayButton));
-        channel2PlayButton.setOnMouseEntered(event -> channelPlayButtonEnter(channel2PlayButton));
-        channel3PlayButton.setOnMouseEntered(event -> channelPlayButtonEnter(channel3PlayButton));
-        channel4PlayButton.setOnMouseEntered(event -> channelPlayButtonEnter(channel4PlayButton));
-        channel5PlayButton.setOnMouseEntered(event -> channelPlayButtonEnter(channel5PlayButton));
-        channel6PlayButton.setOnMouseEntered(event -> channelPlayButtonEnter(channel6PlayButton));
-        channel7PlayButton.setOnMouseEntered(event -> channelPlayButtonEnter(channel7PlayButton));
-        channel8PlayButton.setOnMouseEntered(event -> channelPlayButtonEnter(channel8PlayButton));
-        //</editor-fold>
-
-        //<editor-fold desc="Play Button On Mouse Exited">
-        channel1PlayButton.setOnMouseExited(event -> channelPlayButtonExit(channel1PlayButton));
-        channel2PlayButton.setOnMouseExited(event -> channelPlayButtonExit(channel2PlayButton));
-        channel3PlayButton.setOnMouseExited(event -> channelPlayButtonExit(channel3PlayButton));
-        channel4PlayButton.setOnMouseExited(event -> channelPlayButtonExit(channel4PlayButton));
-        channel5PlayButton.setOnMouseExited(event -> channelPlayButtonExit(channel5PlayButton));
-        channel6PlayButton.setOnMouseExited(event -> channelPlayButtonExit(channel6PlayButton));
-        channel7PlayButton.setOnMouseExited(event -> channelPlayButtonExit(channel7PlayButton));
-        channel8PlayButton.setOnMouseExited(event -> channelPlayButtonExit(channel8PlayButton));
-        //</editor-fold>
-
-        //<editor-fold desc="Play Button On Mouse Click">
-        channel1PlayButton.setOnMouseClicked(event -> {
-            try{
-                if (event.isShiftDown()){
-                    channelPlayButtonPressedWithShift(0);
-                } else {
-                    channelPlayButtonPressed(0, channel1Slider.getValue());
+        for (int i = 0; i < 8; i++){
+            int finalI = i;
+            mixer[i].playBtn.setOnMouseEntered(event -> channelPlayButtonEnter(mixer[finalI].playBtn));
+            mixer[i].playBtn.setOnMouseExited(event -> channelPlayButtonExit(mixer[finalI].playBtn));
+            mixer[i].playBtn.setOnMouseClicked(event -> {
+                try {
+                    if (event.isShiftDown())
+                        channelPlayButtonPressedWithShift(finalI);
+                    else
+                        channelPlayButtonPressed(finalI, mixer[finalI].volumeSlider.getValue());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (IOException ignored){
-
-            }
-        });
-
-        channel2PlayButton.setOnMouseClicked(event -> {
-            try{
-                if (event.isShiftDown()){
-                    channelPlayButtonPressedWithShift(1);
-                } else {
-                    channelPlayButtonPressed(1, channel2Slider.getValue());
+            });
+            mixer[i].volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+                try {
+                    MainApp.DOUT.writeUTF(String.format("SETVOL %d %d", finalI, newValue.intValue()));
+                    MainApp.DOUT.flush();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (IOException e){
+            });
+            mixer[i].predeterTransitionBtn.setOnMouseEntered(event -> greenButtonEntered(mixer[finalI].predeterTransitionBtn));
+            mixer[i].predeterTransitionBtn.setOnMouseExited(event -> greenButtonExited(mixer[finalI].predeterTransitionBtn));
+            mixer[i].predeterTransitionBtn.setOnMouseClicked(event -> predeterTransButtonPressed(mixer[finalI], finalI));
 
-            }
-        });
-
-        channel3PlayButton.setOnMouseClicked(event -> {
-            try{
-                if (event.isShiftDown()){
-                    channelPlayButtonPressedWithShift(2);
-                } else {
-                    channelPlayButtonPressed(2, channel3Slider.getValue());
+            mixer[i].transitionerVolume.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.matches("\\d*"))
+                    mixer[finalI].transitionerVolume.setText(newValue.replaceAll("[^\\d]", ""));
+                if (Integer.parseInt(newValue) > 100){
+                    mixer[finalI].transitionerVolume.setText(oldValue);
                 }
-            } catch (IOException e){
+            });
 
-            }
-        });
+            mixer[i].transitionerTime.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.matches("[0-9.]+"))
+                    mixer[finalI].transitionerTime.setText(newValue.replaceAll("[^[0-9.]]", ""));
+                if (newValue.startsWith("."))
+                    mixer[finalI].transitionerTime.setText(oldValue);
 
-        channel4PlayButton.setOnMouseClicked(event -> {
-            try{
-                if (event.isShiftDown()){
-                    channelPlayButtonPressedWithShift(3);
-                } else {
-                    channelPlayButtonPressed(3, channel4Slider.getValue());
+            });
+
+            mixer[i].transitionerBtn.setOnMouseEntered(event -> greenButtonEntered(mixer[finalI].transitionerBtn));
+            mixer[i].transitionerBtn.setOnMouseExited(event -> greenButtonExited(mixer[finalI].transitionerBtn));
+            mixer[i].transitionerBtn.setOnMouseClicked(event -> transButtonClicked(mixer[finalI], finalI));
+
+            mixer[i].freeBtn.setOnMouseClicked(event -> {
+                try {
+                    freeChannel(mixer[finalI], finalI);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (IOException e){
+            });
 
-            }
-        });
-
-        channel5PlayButton.setOnMouseClicked(event -> {
-            try{
-                if (event.isShiftDown()){
-                    channelPlayButtonPressedWithShift(4);
-                } else {
-                    channelPlayButtonPressed(4, channel5Slider.getValue());
-                }
-            } catch (IOException e){
-
-            }
-        });
-
-        channel6PlayButton.setOnMouseClicked(event -> {
-            try{
-                if (event.isShiftDown()){
-                    channelPlayButtonPressedWithShift(5);
-                } else {
-                    channelPlayButtonPressed(5, channel6Slider.getValue());
-                }
-            } catch (IOException e){
-
-            }
-        });
-
-        channel7PlayButton.setOnMouseClicked(event -> {
-            try{
-                if (event.isShiftDown()){
-                    channelPlayButtonPressedWithShift(6);
-                } else {
-                    channelPlayButtonPressed(6, channel7Slider.getValue());
-                }
-            } catch (IOException e){
-
-            }
-        });
-
-        channel8PlayButton.setOnMouseClicked(event -> {
-            try{
-                if (event.isShiftDown()){
-                    channelPlayButtonPressedWithShift(7);
-                } else {
-                    channelPlayButtonPressed(7, channel8Slider.getValue());
-                }
-            } catch (IOException e){
-
-            }
-        });
-        //</editor-fold>
-
-        //<editor-fold desc="Play Button On Slider Change">
-        channel1Slider.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            try {
-                MainApp.DOUT.writeUTF("SETVOL 0 " + newValue);
-                MainApp.DOUT.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }));
-        channel2Slider.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            try {
-                MainApp.DOUT.writeUTF("SETVOL 1 " + newValue);
-                MainApp.DOUT.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }));
-        channel3Slider.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            try {
-                MainApp.DOUT.writeUTF("SETVOL 2 " + newValue);
-                MainApp.DOUT.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }));
-        channel4Slider.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            try {
-                MainApp.DOUT.writeUTF("SETVOL 3 " + newValue);
-                MainApp.DOUT.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }));
-        channel5Slider.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            try {
-                MainApp.DOUT.writeUTF("SETVOL 4 " + newValue);
-                MainApp.DOUT.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }));
-        channel6Slider.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            try {
-                MainApp.DOUT.writeUTF("SETVOL 5 " + newValue);
-                MainApp.DOUT.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }));
-        channel7Slider.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            try {
-                MainApp.DOUT.writeUTF("SETVOL 6 " + newValue);
-                MainApp.DOUT.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }));
-        channel8Slider.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            try {
-                MainApp.DOUT.writeUTF("SETVOL 7 " + newValue);
-                MainApp.DOUT.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }));
-        //</editor-fold>
-
-        //<editor-fold desc="Predetermined Transition Button Entered">
-        channel1PredeterTransButton.setOnMouseEntered(event ->
-                greenButtonEntered(channel1PredeterTransButton));
-        channel2PredeterTransButton.setOnMouseEntered(event ->
-                greenButtonEntered(channel2PredeterTransButton));
-        channel3PredeterTransButton.setOnMouseEntered(event ->
-                greenButtonEntered(channel3PredeterTransButton));
-        channel4PredeterTransButton.setOnMouseEntered(event ->
-                greenButtonEntered(channel4PredeterTransButton));
-        channel5PredeterTransButton.setOnMouseEntered(event ->
-                greenButtonEntered(channel5PredeterTransButton));
-        channel6PredeterTransButton.setOnMouseEntered(event ->
-                greenButtonEntered(channel6PredeterTransButton));
-        channel7PredeterTransButton.setOnMouseEntered(event ->
-                greenButtonEntered(channel7PredeterTransButton));
-        channel8PredeterTransButton.setOnMouseEntered(event ->
-                greenButtonEntered(channel8PredeterTransButton));
-        //</editor-fold>
-
-        //<editor-fold desc="Predetermined Transition Button Exited">
-        channel1PredeterTransButton.setOnMouseExited(event ->
-                greenButtonExited(channel1PredeterTransButton));
-        channel2PredeterTransButton.setOnMouseExited(event ->
-                greenButtonExited(channel2PredeterTransButton));
-        channel3PredeterTransButton.setOnMouseExited(event ->
-                greenButtonExited(channel3PredeterTransButton));
-        channel4PredeterTransButton.setOnMouseExited(event ->
-                greenButtonExited(channel4PredeterTransButton));
-        channel5PredeterTransButton.setOnMouseExited(event ->
-                greenButtonExited(channel5PredeterTransButton));
-        channel6PredeterTransButton.setOnMouseExited(event ->
-                greenButtonExited(channel6PredeterTransButton));
-        channel7PredeterTransButton.setOnMouseExited(event ->
-                greenButtonExited(channel7PredeterTransButton));
-        channel8PredeterTransButton.setOnMouseExited(event ->
-                greenButtonExited(channel8PredeterTransButton));
-        //</editor-fold>
-
-        //<editor-fold desc="Predetermined Transition Button Clicked">
-        channel1PredeterTransButton.setOnMouseClicked(event ->
-        {
-            try {
-                channelPredeterTransButtonPressed(0,
-                        channel1PredeterTransVol,
-                        channel1PredeterTransTime,
-                        channel1Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel2PredeterTransButton.setOnMouseClicked(event ->
-        {
-            try {
-                channelPredeterTransButtonPressed(1,
-                        channel2PredeterTransVol,
-                        channel2PredeterTransTime,
-                        channel2Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel3PredeterTransButton.setOnMouseClicked(event ->
-        {
-            try {
-                channelPredeterTransButtonPressed(2,
-                        channel3PredeterTransVol,
-                        channel3PredeterTransTime,
-                        channel3Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel4PredeterTransButton.setOnMouseClicked(event ->
-        {
-            try {
-                channelPredeterTransButtonPressed(3,
-                        channel4PredeterTransVol,
-                        channel4PredeterTransTime,
-                        channel4Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel5PredeterTransButton.setOnMouseClicked(event ->
-        {
-            try {
-                channelPredeterTransButtonPressed(4,
-                        channel5PredeterTransVol,
-                        channel5PredeterTransTime,
-                        channel5Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel6PredeterTransButton.setOnMouseClicked(event ->
-        {
-            try {
-                channelPredeterTransButtonPressed(5,
-                        channel6PredeterTransVol,
-                        channel6PredeterTransTime,
-                        channel6Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel7PredeterTransButton.setOnMouseClicked(event ->
-        {
-            try {
-                channelPredeterTransButtonPressed(6,
-                        channel7PredeterTransVol,
-                        channel7PredeterTransTime,
-                        channel7Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel8PredeterTransButton.setOnMouseClicked(event ->
-        {
-            try {
-                channelPredeterTransButtonPressed(7,
-                        channel8PredeterTransVol,
-                        channel8PredeterTransTime,
-                        channel8Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        //</editor-fold>
-
-        //<editor-fold desc="Free button Clicked">
-        channel1FreeButton.setOnMouseClicked(event -> {
-            try {
-                freeButtonClicked(
-                        0, channel1Sound, channel1Cue, channel1PredeterTransVol, channel1PredeterTransTime
-                );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel2FreeButton.setOnMouseClicked(event -> {
-            try {
-                freeButtonClicked(
-                        1, channel2Sound, channel2Cue, channel2PredeterTransVol, channel2PredeterTransTime
-                );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel3FreeButton.setOnMouseClicked(event -> {
-            try {
-                freeButtonClicked(
-                        2, channel3Sound, channel1Cue, channel1PredeterTransVol, channel1PredeterTransTime
-                );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel4FreeButton.setOnMouseClicked(event -> {
-            try {
-                freeButtonClicked(
-                        3, channel4Sound, channel1Cue, channel1PredeterTransVol, channel1PredeterTransTime
-                );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel5FreeButton.setOnMouseClicked(event -> {
-            try {
-                freeButtonClicked(
-                        4, channel5Sound, channel1Cue, channel1PredeterTransVol, channel1PredeterTransTime
-                );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel6FreeButton.setOnMouseClicked(event -> {
-            try {
-                freeButtonClicked(
-                        5, channel6Sound, channel1Cue, channel1PredeterTransVol, channel1PredeterTransTime
-                );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel7FreeButton.setOnMouseClicked(event -> {
-            try {
-                freeButtonClicked(
-                        6, channel7Sound, channel1Cue, channel1PredeterTransVol, channel1PredeterTransTime
-                );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel8FreeButton.setOnMouseClicked(event -> {
-            try {
-                freeButtonClicked(
-                        7, channel8Sound, channel1Cue, channel1PredeterTransVol, channel1PredeterTransTime
-                );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        //</editor-fold>
-
-        //<editor-fold desc="Slider Clicked">
-        channel1Slider.setOnMouseClicked((event -> {sliderClicked(0);}));
-        channel2Slider.setOnMouseClicked((event -> {sliderClicked(1);}));
-        channel3Slider.setOnMouseClicked((event -> {sliderClicked(2);}));
-        channel4Slider.setOnMouseClicked((event -> {sliderClicked(3);}));
-        channel5Slider.setOnMouseClicked((event -> {sliderClicked(4);}));
-        channel6Slider.setOnMouseClicked((event -> {sliderClicked(5);}));
-        channel7Slider.setOnMouseClicked((event -> {sliderClicked(6);}));
-        channel8Slider.setOnMouseClicked((event -> {sliderClicked(7);}));
-        //</editor-fold>
-
-        //<editor-fold desc="Transition volume changed">
-        channel1TransitionerVol.textProperty().addListener((observable, oldValue, newValue) -> transitionerVolEdited(oldValue, newValue, channel1TransitionerVol));
-        channel3TransitionerVol.textProperty().addListener((observable, oldValue, newValue) -> transitionerVolEdited(oldValue, newValue, channel3TransitionerVol));
-        channel4TransitionerVol.textProperty().addListener((observable, oldValue, newValue) -> transitionerVolEdited(oldValue, newValue, channel4TransitionerVol));
-        channel2TransitionerVol.textProperty().addListener((observable, oldValue, newValue) -> transitionerVolEdited(oldValue, newValue, channel2TransitionerVol));
-        channel5TransitionerVol.textProperty().addListener((observable, oldValue, newValue) -> transitionerVolEdited(oldValue, newValue, channel5TransitionerVol));
-        channel6TransitionerVol.textProperty().addListener((observable, oldValue, newValue) -> transitionerVolEdited(oldValue, newValue, channel6TransitionerVol));
-        channel7TransitionerVol.textProperty().addListener((observable, oldValue, newValue) -> transitionerVolEdited(oldValue, newValue, channel7TransitionerVol));
-        channel8TransitionerVol.textProperty().addListener((observable, oldValue, newValue) -> transitionerVolEdited(oldValue, newValue, channel8TransitionerVol));
-        //</editor-fold>
-
-        //<editor-fold desc="Transition time changed">
-        channel1TransitionerTime.textProperty().addListener((observable, oldValue, newValue) -> transitionTimeEdited(newValue, channel1TransitionerTime));
-        channel2TransitionerTime.textProperty().addListener((observable, oldValue, newValue) -> transitionTimeEdited(newValue, channel2TransitionerTime));
-        channel3TransitionerTime.textProperty().addListener((observable, oldValue, newValue) -> transitionTimeEdited(newValue, channel3TransitionerTime));
-        channel4TransitionerTime.textProperty().addListener((observable, oldValue, newValue) -> transitionTimeEdited(newValue, channel4TransitionerTime));
-        channel5TransitionerTime.textProperty().addListener((observable, oldValue, newValue) -> transitionTimeEdited(newValue, channel5TransitionerTime));
-        channel6TransitionerTime.textProperty().addListener((observable, oldValue, newValue) -> transitionTimeEdited(newValue, channel6TransitionerTime));
-        channel7TransitionerTime.textProperty().addListener((observable, oldValue, newValue) -> transitionTimeEdited(newValue, channel7TransitionerTime));
-        channel8TransitionerTime.textProperty().addListener((observable, oldValue, newValue) -> transitionTimeEdited(newValue, channel8TransitionerTime));
-        //</editor-fold>
-
-        //<editor-fold desc="Transitioner button entered">
-        channel1TransitionerButton.setOnMouseEntered(event -> greenButtonEntered(channel1TransitionerButton));
-        channel2TransitionerButton.setOnMouseEntered(event -> greenButtonEntered(channel2TransitionerButton));
-        channel3TransitionerButton.setOnMouseEntered(event -> greenButtonEntered(channel3TransitionerButton));
-        channel4TransitionerButton.setOnMouseEntered(event -> greenButtonEntered(channel4TransitionerButton));
-        channel5TransitionerButton.setOnMouseEntered(event -> greenButtonEntered(channel5TransitionerButton));
-        channel6TransitionerButton.setOnMouseEntered(event -> greenButtonEntered(channel6TransitionerButton));
-        channel7TransitionerButton.setOnMouseEntered(event -> greenButtonEntered(channel7TransitionerButton));
-        channel8TransitionerButton.setOnMouseEntered(event -> greenButtonEntered(channel8TransitionerButton));
-        //</editor-fold>
-
-        //<editor-fold desc="Transition button exited">
-        channel1TransitionerButton.setOnMouseExited(event -> greenButtonExited(channel1TransitionerButton));
-        channel2TransitionerButton.setOnMouseExited(event -> greenButtonExited(channel2TransitionerButton));
-        channel3TransitionerButton.setOnMouseExited(event -> greenButtonExited(channel3TransitionerButton));
-        channel4TransitionerButton.setOnMouseExited(event -> greenButtonExited(channel4TransitionerButton));
-        channel5TransitionerButton.setOnMouseExited(event -> greenButtonExited(channel5TransitionerButton));
-        channel6TransitionerButton.setOnMouseExited(event -> greenButtonExited(channel6TransitionerButton));
-        channel7TransitionerButton.setOnMouseExited(event -> greenButtonExited(channel7TransitionerButton));
-        channel8TransitionerButton.setOnMouseExited(event -> greenButtonExited(channel8TransitionerButton));
-        //</editor-fold>
-
-        //<editor-fold desc="Transition button clicked">
-        channel1TransitionerButton.setOnMouseClicked(event -> {
-            try {
-                transitionButtonClicked(0, channel1TransitionerVol, channel1TransitionerTime, channel1Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel2TransitionerButton.setOnMouseClicked(event -> {
-            try {
-                transitionButtonClicked(1, channel2TransitionerVol, channel2TransitionerTime, channel2Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel3TransitionerButton.setOnMouseClicked(event -> {
-            try {
-                transitionButtonClicked(2, channel3TransitionerVol, channel3TransitionerTime, channel3Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel4TransitionerButton.setOnMouseClicked(event -> {
-            try {
-                transitionButtonClicked(3, channel4TransitionerVol, channel4TransitionerTime, channel4Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel5TransitionerButton.setOnMouseClicked(event -> {
-            try {
-                transitionButtonClicked(4, channel5TransitionerVol, channel5TransitionerTime, channel5Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel6TransitionerButton.setOnMouseClicked(event -> {
-            try {
-                transitionButtonClicked(5, channel6TransitionerVol, channel6TransitionerTime, channel6Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel7TransitionerButton.setOnMouseClicked(event -> {
-            try {
-                transitionButtonClicked(6, channel7TransitionerVol, channel7TransitionerTime, channel7Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        channel8TransitionerButton.setOnMouseClicked(event -> {
-            try {
-                transitionButtonClicked(7, channel8TransitionerVol, channel8TransitionerTime, channel8Slider);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        //</editor-fold>
-
+            mixer[i].volumeSlider.setOnMouseClicked(event -> sliderClicked(finalI));
+        }
     }
 
-    void transitionButtonClicked(int channel, TextField volT, TextField timeT, Slider slider) throws IOException {
-        Long curVolumeL = Math.round(slider.getValue());
-        int currentVol = curVolumeL.intValue();
-        int newVolume = Integer.parseInt(volT.getText());
-        float time = Float.parseFloat(timeT.getText()) * 1000;
+    private void freeChannel(Mixer mixer, int channel) throws IOException {
+        mixer.soundName.setText("N/A");
+        mixer.soundCue.setText("N/A");
+        mixer.predeterTransitionVolume.setText("N/A");
+        mixer.predeterTransitionTime.setText("N/A");
 
-        if (newVolume == -1){
-            MainApp.DOUT.writeUTF("FADEOUT " + channel + " " + time);
-            MainApp.DOUT.flush();
-        }
+        MIXER_CHANNELS[channel] = null;
+        transitionIterator[channel] = null;
+        if (transitionTasks[channel] != null)
+            transitionTasks[channel].cancel();
+        transitionTasks[channel] = null;
 
-        if (newVolume > currentVol) {//Increasing volume
-            transitionTasks[channel] = new TimerTask() {
-                int curVol = currentVol;
-                final int newVol = newVolume;
-                final Slider volSlider = slider;
+        MainApp.DOUT.writeUTF("FREE " + channel);
+        MainApp.DOUT.flush();
+    }
 
-                @Override
-                public void run() {
-                    curVol++;
-                    volSlider.setValue(curVol);
-                    if (curVol == newVol) {
-                        this.cancel();
-                    }
-                }
-            };
-            new Timer().schedule(transitionTasks[channel], 0L, (long) (time / (newVolume - currentVol)));
-        }
+    private void transButtonClicked(Mixer mixer, int channel) {
+        if (mixer.transitionerTime.getText().isEmpty() || mixer.transitionerVolume.getText().isEmpty() || mixer.transitionerTime.getText().endsWith("."))
+            return;
+
+        int volume = Integer.parseInt(mixer.transitionerVolume.getText());
+        float time = Float.parseFloat(mixer.transitionerTime.getText());
+
+        fade(volume, Math.round(time), mixer.volumeSlider, channel);
+    }
+
+    private void predeterTransButtonPressed(Mixer mixer, int channel) {
+        if (mixer.predeterTransitionVolume.getText().equals("N/A"))
+            return;
+        else if (mixer.predeterTransitionVolume.getText().equals("END"))
+            fadeOut(Math.round(Float.parseFloat(mixer.predeterTransitionTime.getText())), mixer.volumeSlider, channel);
         else {
-            transitionTasks[channel] = new TimerTask() {
-                int curVol = currentVol;
-                int newVol = newVolume;
-                Slider volSlider = slider;
+            int volume = Integer.parseInt(mixer.predeterTransitionVolume.getText());
+            float time = Float.parseFloat(mixer.predeterTransitionTime.getText());
+            fade(volume, Math.round(time), mixer.volumeSlider, channel);
+        }
 
-                @Override
-                public void run() {
-                    curVol--;
-                    volSlider.setValue(curVol);
-                    if (curVol == newVol) {
-                        this.cancel();
+        loadNextTransition(mixer, channel);
+
+    }
+
+    private static void loadNextTransition(Mixer mixer, int channel) {
+        if (transitionIterator != null && transitionIterator[channel].hasNext()){
+            MixerJsonObject.PlayScene.SoundConfiguration.SoundTransition st = transitionIterator[channel].next();
+            if (st.transitionType.equals("FADEOUT"))
+                mixer.predeterTransitionVolume.setText("END");
+            else if (st.transitionType.equals("FADEIN")) {
+                mixer.predeterTransitionVolume.setText("S|" + st.newVolume);
+                mixer.volumeSlider.setValue(0);
+            }
+            else
+                mixer.predeterTransitionVolume.setText(String.valueOf(st.newVolume));
+            mixer.predeterTransitionTime.setText(String.valueOf(st.transitionTime));
+        } else {
+            mixer.predeterTransitionVolume.setText("N/A");
+            mixer.predeterTransitionTime.setText("N/A");
+            transitionIterator[channel] = null;
+        }
+    }
+
+    void fade(int newVolume, int time, Slider slider, int channel){
+        if (transitionTasks[channel] != null)
+            transitionTasks[channel].cancel();
+        transitionTasks[channel] = new TimerTask() {
+            int currentVol = (int) slider.getValue();
+            final boolean fadeup = newVolume > currentVol;
+            @Override
+            public void run() {
+                if (currentVol == newVolume)
+                    cancel();
+                if (fadeup)
+                    currentVol++;
+                else
+                    currentVol--;
+                slider.setValue(currentVol);
+            }
+        };
+        new Timer().schedule(transitionTasks[channel], 0L, (long) (time/Math.abs(newVolume - slider.getValue())));
+    }
+
+    void fadeOut(int time, Slider slider, int channel){
+        if (transitionTasks[channel] != null)
+            transitionTasks[channel].cancel();
+        transitionTasks[channel] = new TimerTask() {
+            int currentVol = (int) slider.getValue();
+            @Override
+            public void run() {
+                if (currentVol == 0){
+                    try {
+                        MainApp.DOUT.writeUTF("STOP " + channel);
+                        MainApp.DOUT.flush();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
+                    cancel();
                 }
-            };
-            new Timer().schedule(transitionTasks[channel], 0L, (long) (time / (currentVol - newVolume)));
-        }
+                currentVol--;
+                slider.setValue(currentVol);
+            }
+        };
+        new Timer().schedule(transitionTasks[channel], 0L, (long) (time/slider.getValue()));
     }
 
-    void transitionerVolEdited(String oldValue, String newValue, TextField tf){
-        if (!newValue.matches("[0-9-]+")){
-            tf.setText(newValue.replaceAll("[^[0-9-]]", ""));
-        }
-        if (newValue.length() > 3){
-            tf.setText(oldValue);
-        }
-    }
-
-    void transitionTimeEdited(String newValue, TextField tf){
-        if (!newValue.matches("[0-9.]+")){
-            tf.setText(newValue.replaceAll("[^[0-9.]]", ""));
+    private static void sortAll() {
+        if (mixerJsonObject.scenes != null && mixerJsonObject.scenes.length > 0){
+            for (MixerJsonObject.PlayScene ps : mixerJsonObject.scenes){
+                if (ps.soundConfiguration != null && ps.soundConfiguration.length > 0){
+                    for (MixerJsonObject.PlayScene.SoundConfiguration sc : ps.soundConfiguration){
+                        if (sc.transitions != null && sc.transitions.length > 0){
+                            Arrays.sort(sc.transitions, Comparator.comparingInt(o -> o.transitionId));
+                        }
+                    }
+                    Arrays.sort(ps.soundConfiguration, Comparator.comparingInt(o -> o.cueId));
+                }
+            }
+            Arrays.sort(mixerJsonObject.scenes, Comparator.comparingInt(o -> o.sceneIdx));
         }
     }
 
@@ -1007,27 +624,18 @@ public class MixerController implements Initializable {
         pane.setBackground(Background.fill(Color.color((double) 112 /255, (double) 196 /255, (double) 129 /255)));
     }
 
-
-
-    void freeButtonClicked(int channel, Label sound, Label cue, Label predeterVol, Label predeterTransTime) throws IOException {
-        MainApp.DOUT.writeUTF("FREE " + channel);
-        MainApp.DOUT.flush();
-        MIXER_CHANNELS[channel] = null;
-        MIXER_CHANNEL_TRANSITION_IDX[channel] = 0;
-
-        sound.setText("N/A");
-        cue.setText("N/A");
-        predeterVol.setText("0");
-        predeterTransTime.setText("0 ms");
-    }
-
-
     void channelPlayButtonPressed(int channel, double sliderValue) throws IOException {
         MainApp.DOUT.writeUTF("PLAY " + channel);
         MainApp.DOUT.flush();
+        if (mixer[channel].predeterTransitionVolume.getText().contains("S|")){
+            int newVolume = Integer.parseInt(mixer[channel].predeterTransitionVolume.getText().replace("S|", ""));
+            int time = Integer.parseInt(mixer[channel].predeterTransitionTime.getText());
+            fade(newVolume, time, mixer[channel].volumeSlider, channel);
+            loadNextTransition(mixer[channel], channel);
+            return;
+        }
         MainApp.DOUT.writeUTF("SETVOL " + channel + " " + sliderValue);
         MainApp.DOUT.flush();
-
     }
 
     void channelPlayButtonPressedWithShift(int channel) throws IOException{
@@ -1035,67 +643,6 @@ public class MixerController implements Initializable {
         MainApp.DOUT.flush();
     }
 
-    void channelPredeterTransButtonPressed(int channel, Label vol, Label time, Slider slider) throws IOException {
-        MixerJsonObject.PlayScene.SoundConfiguration channelSoundConfig = MIXER_CHANNELS[channel];
-        if (channelSoundConfig.transitions.length == MIXER_CHANNEL_TRANSITION_IDX[channel])
-            return;
-        //Get next transition
-        MixerJsonObject.PlayScene.SoundConfiguration.SoundTransition nextTrans = channelSoundConfig.transitions[MIXER_CHANNEL_TRANSITION_IDX[channel]];
-        if (nextTrans.transitionType.equals("FADEOUT")){
-            MainApp.DOUT.writeUTF("FADEOUT " + channel + " " + nextTrans.transitionTime);
-            MainApp.DOUT.flush();
-        }
-        Long currentVolL = Math.round(slider.getValue());
-        int currentVol = currentVolL.intValue();
-        int newVolume = nextTrans.newVolume;
-        System.out.println(currentVol + " " + newVolume);
-        if (transitionTasks[channel] != null && !nextTrans.transitionType.equals("FADEOUT")){
-            transitionTasks[channel].cancel();
-        }
-        if (newVolume > currentVol) {//Increasing volume
-            transitionTasks[channel] = new TimerTask() {
-                int curVol = currentVol;
-                final int newVol = newVolume;
-                final Slider volSlider = slider;
-
-                @Override
-                public void run() {
-                    curVol++;
-                    volSlider.setValue(curVol);
-                    if (curVol == newVol) {
-                        this.cancel();
-                    }
-                }
-            };
-            new Timer().schedule(transitionTasks[channel], 0, nextTrans.transitionTime / (newVolume - currentVol));
-        }
-        else {
-            transitionTasks[channel] = new TimerTask() {
-                int curVol = currentVol;
-                int newVol = newVolume;
-                Slider volSlider = slider;
-
-                @Override
-                public void run() {
-                    curVol--;
-                    volSlider.setValue(curVol);
-                    if (curVol == newVol) {
-                        this.cancel();
-                    }
-                }
-            };
-            new Timer().schedule(transitionTasks[channel], 0, nextTrans.transitionTime / (currentVol - newVolume));
-        }
-        MIXER_CHANNEL_TRANSITION_IDX[channel]++;
-        if (channelSoundConfig.transitions.length == MIXER_CHANNEL_TRANSITION_IDX[channel]){
-            vol.setText("0");
-            time.setText("0 ms");
-            return;
-        }
-        MixerJsonObject.PlayScene.SoundConfiguration.SoundTransition newTrans = channelSoundConfig.transitions[MIXER_CHANNEL_TRANSITION_IDX[channel]];
-        vol.setText(newTrans.transitionType.equals("FADEOUT") ? "END" : String.valueOf(newTrans.newVolume));
-        time.setText(newTrans.transitionTime + " ms");
-    }
 
     private void updateSoundCueList(){
         soundCueGridPane.getChildren().clear();
@@ -1137,7 +684,7 @@ public class MixerController implements Initializable {
         });
         newSoundCueText.setOnMouseClicked(event -> {
             try {
-                autoAddSoundToMixer(soundConfig);
+                addSoundToMixer(soundConfig);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -1146,105 +693,37 @@ public class MixerController implements Initializable {
         return newSoundCueText;
     }
 
-
-    private void autoAddSoundToMixer(MixerJsonObject.PlayScene.SoundConfiguration soundConfig) throws IOException {
+    void addSoundToMixer(MixerJsonObject.PlayScene.SoundConfiguration config) throws IOException {
         for (int i = 0; i < 8; i++){
-            if (MIXER_CHANNELS[i] == null){
-                MIXER_CHANNELS[i] = soundConfig; // Add sound to server
-                if (soundConfig.transitions.length != 0){
-                    if (soundConfig.transitions[0].transitionType.equals("FADEIN")){
-                        // If the soundcue has a fadein
-                        // SOUNDADDTOMIXER channel soundId loops startingVol fadeIn fadeInMs
-                        MainApp.DOUT.writeUTF("SOUNDADDTOMIXER " + i + " " + soundConfig.soundId + " " +
-                                soundConfig.loop + " " + soundConfig.startVol + " True " +
-                                soundConfig.transitions[0].transitionTime);
-                        MainApp.DOUT.flush();
-                        MIXER_CHANNEL_TRANSITION_IDX[i]++;
-                    }
-                    else {
-                        // SOUNDADDTOMIXER channel soundId loops startingVol
-                        MainApp.DOUT.writeUTF("SOUNDADDTOMIXER " + i + " " + soundConfig.soundId + " " +
-                                soundConfig.loop + " " + soundConfig.startVol + " False");
-                        MainApp.DOUT.flush();
-                    }
-                }
+            if (MIXER_CHANNELS[i] == null) {
+                MIXER_CHANNELS[i] = config;
+                mixer[i].soundCue.setText(config.cueName);
+                mixer[i].soundName.setText(getSoundFromId(config.soundId).soundFile.split("\\.")[0]);
 
-                // Add sound to client
-                switch (i){
-                    case 0:
-                        channel1Slider.setValue(soundConfig.startVol);
-                        channel1Sound.setText(String.valueOf(soundConfig.soundId));
-                        channel1Cue.setText(soundConfig.cueName);
-                        if (soundConfig.transitions.length != 0)
-                            setTransitionText(soundConfig, channel1PredeterTransVol, channel1PredeterTransTime);
-                        break;
-                    case 1:
-                        channel2Slider.setValue(soundConfig.startVol);
-                        channel2Sound.setText(String.valueOf(soundConfig.soundId));
-                        channel2Cue.setText(soundConfig.cueName);
-                        if (soundConfig.transitions.length != 0)
-                            setTransitionText(soundConfig, channel2PredeterTransVol, channel2PredeterTransTime);
-                        break;
-                    case 2:
-                        channel3Slider.setValue(soundConfig.startVol);
-                        channel3Sound.setText(String.valueOf(soundConfig.soundId));
-                        channel3Cue.setText(soundConfig.cueName);
-                        if (soundConfig.transitions.length != 0)
-                            setTransitionText(soundConfig, channel3PredeterTransVol, channel3PredeterTransTime);
-                        break;
-                    case 3:
-                        channel4Slider.setValue(soundConfig.startVol);
-                        channel4Sound.setText(String.valueOf(soundConfig.soundId));
-                        channel4Cue.setText(soundConfig.cueName);
-                        if (soundConfig.transitions.length != 0)
-                            setTransitionText(soundConfig, channel4PredeterTransVol, channel4PredeterTransTime);
-                        break;
-                    case 4:
-                        channel5Slider.setValue(soundConfig.startVol);
-                        channel5Sound.setText(String.valueOf(soundConfig.soundId));
-                        channel5Cue.setText(soundConfig.cueName);
-                        if (soundConfig.transitions.length != 0)
-                            setTransitionText(soundConfig, channel5PredeterTransVol, channel5PredeterTransTime);
-                        break;
-                    case 5:
-                        channel6Slider.setValue(soundConfig.startVol);
-                        channel6Sound.setText(String.valueOf(soundConfig.soundId));
-                        channel6Cue.setText(soundConfig.cueName);
-                        if (soundConfig.transitions.length != 0)
-                            setTransitionText(soundConfig, channel6PredeterTransVol, channel6PredeterTransTime);
-                        break;
-                    case 6:
-                        channel7Slider.setValue(soundConfig.startVol);
-                        channel7Sound.setText(String.valueOf(soundConfig.soundId));
-                        channel7Cue.setText(soundConfig.cueName);
-                        if (soundConfig.transitions.length != 0)
-                            setTransitionText(soundConfig, channel7PredeterTransVol, channel7PredeterTransTime);
-                        break;
-                    case 7:
-                        channel8Slider.setValue(soundConfig.startVol);
-                        channel8Sound.setText(String.valueOf(soundConfig.soundId));
-                        channel8Cue.setText(soundConfig.cueName);
-                        if (soundConfig.transitions.length != 0)
-                            setTransitionText(soundConfig, channel8PredeterTransVol, channel8PredeterTransTime);
-                        break;
-
+                if (config.transitions != null && config.transitions.length > 0) {
+                    transitionIterator[i] = Arrays.stream(config.transitions).iterator();
+                    loadNextTransition(mixer[i], i);
+                    if (!config.transitions[0].transitionType.equals("FADEIN"))
+                        mixer[i].volumeSlider.setValue(config.transitions[0].newVolume);
+                    else
+                        mixer[i].volumeSlider.setValue(0);
+                } else {
+                    mixer[i].volumeSlider.setValue(config.startVol);
                 }
+                MainApp.DOUT.writeUTF(String.format("SOUNDADDTOMIXER %d %d %d %d", i, config.soundId, config.loop, config.startVol));
+                MainApp.DOUT.flush();
                 break;
             }
         }
-
     }
 
-    private void setTransitionText(MixerJsonObject.PlayScene.SoundConfiguration soundConfig, Label channel1PredeterTransVol, Label channel1PredeterTransTime) {
-        if (soundConfig.transitions[0].transitionType.equals("FADEIN")) {
-            if (soundConfig.transitions.length > 1){
-                channel1PredeterTransVol.setText(String.valueOf(soundConfig.transitions[1].newVolume));
-                channel1PredeterTransTime.setText(soundConfig.transitions[1].transitionTime + " ms");
+    MixerJsonObject.SoundFiles getSoundFromId(int id){
+        for (MixerJsonObject.SoundFiles sf : mixerJsonObject.listOfSounds){
+            if (sf.soundId == id){
+                return sf;
             }
-        } else {
-            channel1PredeterTransVol.setText(String.valueOf(soundConfig.transitions[0].newVolume));
-            channel1PredeterTransTime.setText(soundConfig.transitions[0].transitionTime + " ms");
         }
+        return null;
     }
 
     private void updateSceneList() throws IOException {

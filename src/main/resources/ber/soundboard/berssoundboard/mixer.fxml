@@ -9,7 +9,10 @@
    <top>
       <BorderPane prefHeight="20.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <left>
-            <Label text="Title" textFill="WHITE" BorderPane.alignment="CENTER" />
+            <Label fx:id="title" text="Title" textFill="WHITE" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets left="10.0" />
+               </padding></Label>
          </left>
          <right>
             <Label fx:id="mixerCloseButton" onMouseEntered="#onMouseEnteredExitButton" onMouseExited="#onMouseExitedExitButton" onMousePressed="#onMousePressedExitButton" text="X" textFill="WHITE" BorderPane.alignment="CENTER">

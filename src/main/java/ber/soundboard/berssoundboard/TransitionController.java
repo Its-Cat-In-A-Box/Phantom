@@ -179,6 +179,11 @@ public class TransitionController implements Initializable {
 
     }
 
+    @FXML
+    void cancelBtnClicked(){
+        ((Stage) startingVol.getScene().getWindow()).close();
+    }
+
     private void loadTransition(MixerJsonObject.PlayScene.SoundConfiguration soundConfiguration) {
         if (soundConfiguration.transitions != null && soundConfiguration.transitions.length > 0){
             MixerJsonObject.PlayScene.SoundConfiguration.SoundTransition[] transitions = soundConfiguration.transitions;
@@ -231,11 +236,6 @@ public class TransitionController implements Initializable {
 
     @FXML
     void confirmBtnClicked(ActionEvent event) throws IOException {
-        if (cueOrder.getText().isEmpty() || startingVol.getText().isEmpty())
-            return;
-
-
-
         int curSceneIdx = 0;
         int soundConfIdx = 0;
         for (MixerJsonObject.PlayScene ps : mixerJsonObject.scenes) {
@@ -255,19 +255,23 @@ public class TransitionController implements Initializable {
                     soundId = sf.soundId;
                 }
             }
-            int tOrder = Integer.parseInt(transOrder.getText());
-            String tType = transTypeMenu.getText();
-            int tVol = Integer.parseInt(transVol.getText());
-            int tTime = Math.round(Float.parseFloat(transTime.getText()) * 1000);
-
-            MixerJsonObject.PlayScene.SoundConfiguration sc = new MixerJsonObject.PlayScene.SoundConfiguration(
-                    cOrder, soundId, cueName, startVol,
-                    new MixerJsonObject.PlayScene.SoundConfiguration.SoundTransition[]
-                            {new MixerJsonObject.PlayScene.SoundConfiguration.SoundTransition(
-                                    tOrder, tType, tVol, tTime)}
-            );
-
-
+            MixerJsonObject.PlayScene.SoundConfiguration sc = null;
+            if (!transitionMenu.getText().equals("Select transition")) {
+                int tOrder = Integer.parseInt(transOrder.getText());
+                String tType = transTypeMenu.getText();
+                int tVol = Integer.parseInt(transVol.getText());
+                int tTime = Math.round(Float.parseFloat(transTime.getText()) * 1000);
+                sc = new MixerJsonObject.PlayScene.SoundConfiguration(
+                        cOrder, soundId, cueName, startVol,
+                        new MixerJsonObject.PlayScene.SoundConfiguration.SoundTransition[]
+                                {new MixerJsonObject.PlayScene.SoundConfiguration.SoundTransition(
+                                        tOrder, tType, tVol, tTime)}
+                );
+            } else {
+                sc = new MixerJsonObject.PlayScene.SoundConfiguration(
+                        cOrder, soundId, cueName, startVol,
+                        new MixerJsonObject.PlayScene.SoundConfiguration.SoundTransition[0]);
+            }
 
 
             if (mixerJsonObject.scenes[curSceneIdx].soundConfiguration == null) {
