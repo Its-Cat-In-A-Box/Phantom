@@ -728,6 +728,7 @@ public class MixerController implements Initializable {
 
     private void updateSceneList() throws IOException {
         sceneSelector.getItems().clear();
+        sortAll();
         int i = mixerJsonObject.scenes.length;
         if (i > 0){ //If scene already exists
             for (int j = 0; j < i; j++){
