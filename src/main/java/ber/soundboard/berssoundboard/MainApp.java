@@ -23,6 +23,7 @@ public class MainApp extends Application {
     public static DataInputStream DIN;
     @Override
     public void start(Stage stage) throws Exception {
+        MainApp.GLOBAL_DATA.put("HasNewData", "false");
         ProcessBuilder serverProc = new ProcessBuilder(System.getProperty("user.dir") + "/script/venv/Scripts/python", System.getProperty("user.dir") + "/script/main.py").inheritIO();
         serverProc.redirectErrorStream(true);
 

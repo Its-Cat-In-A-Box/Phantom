@@ -21,21 +21,18 @@ s = socket.socket()
 s.bind((host, port))
 s.listen(128)
 s.setblocking(True)
-print("Socket Listening")
 connection, adress = s.accept()
 
 
 def main():
     global REQUEST_DATA_DIR, SOUND_LIST, connection
-
-    print("Connected to Java UI client")
+    time.sleep(1)
     confirmMessage = jpysocket.jpyencode("CLIENTCONNECTED")
     connection.send(confirmMessage)
     msgRecv = connection.recv(1024)
     confirmReceiveMessage = jpysocket.jpydecode(msgRecv)
 
     if confirmReceiveMessage == "SERVERCONNECTED":
-        print("Client confirmed message, initializing")
         requestMessage = jpysocket.jpyencode("REQUEST_DATA_DIR")
         connection.send(requestMessage)
         msgRecv = connection.recv(1024)
@@ -46,6 +43,7 @@ def main():
             cmdArgs = msgRecv.split()
             cmdName = cmdArgs[0]
             if cmdName == "TERMINATION":
+                connection.send(jpysocket.jpyencode("ok"))
                 sys.exit(0)
             elif cmdName == "LOADSOUND":  # Open the json file and load all the data
                 jsonName = cmdArgs[1]
@@ -53,9 +51,11 @@ def main():
                     data = json.load(file)
                     if (n := data.get('listOfSounds')) is not None:
                         for items in n:
-                            print(f"Loaded {items['soundId']} {items['soundFile']}")
                             soundData = pygame.mixer.Sound(f"{REQUEST_DATA_DIR}\\{jsonName}\\{items.get('soundFile')}")
                             SOUND_LIST.update({items['soundId']: soundData})
+                msg = jpysocket.jpyencode("LOADED")
+                connection.send(msg)
+
             elif cmdName == "SETVOL":
                 setVol(int(cmdArgs[1]), cmdArgs[2])
             elif cmdName == "FADE":
@@ -63,16 +63,12 @@ def main():
             elif cmdName == "FADEOUT":
                 pygame.mixer.Channel(int(cmdArgs[1])).fadeout(int(cmdArgs[2]))
             elif cmdName == "PLAY":
-                print("Client requested to play sound " + msgRecv)
                 togglePlayPause(cmdArgs[1])
             elif cmdName == "SOUNDADDTOMIXER":
-                print("Client requested to add sound to mixer " + msgRecv)
                 soundAddToMixer(cmdArgs[1], cmdArgs[2], cmdArgs[3], cmdArgs[4])
             elif cmdName == "STOP":
-                print ("Client requested to stop mixer " + msgRecv)
                 pygame.mixer.Channel(int(cmdArgs[1])).stop()
             elif cmdName == "FREE":
-                print ("Client requested to free channel " + msgRecv)
                 pygame.mixer.Channel(int(cmdArgs[1])).stop()
                 mixerChannel[int(cmdArgs[1])] = None
                 pauseStatus[int(cmdArgs[1])] = False
@@ -80,8 +76,6 @@ def main():
 
 
 def setVol(channel, vol):
-    print ("Client requested to change volume")
-    print (f"{channel} | {vol}")
     if mixerChannel[channel] != None:
         mixerChannel[channel].update({"startingVol": vol})
     pygame.mixer.Channel(int(channel)).set_volume(float(vol) / 100)
@@ -103,9 +97,7 @@ def fadeVolume(channel, duration, newVol):
 
 def togglePlayPause(channel):
     channel = int(channel)
-    print(pygame.mixer.Channel(channel).get_sound())
     if pygame.mixer.Channel(channel).get_sound() is None:  # If the sound is not assigned to the channel
-        print("Sound is unassigned")
         if (mixerChannel[int(channel)]) is None:
             return
         pauseStatus[channel] = False
@@ -124,11 +116,9 @@ def togglePlayPause(channel):
             pygame.mixer.Channel(channel).play(soundData, int(loops))
     else:  # If a sound is assigned, but probably paused
         if pauseStatus[channel] == False:
-            print("busy")
             pygame.mixer.Channel(channel).pause()
             pauseStatus[channel] = True
         else:
-            print("not busy")
             pygame.mixer.Channel(channel).unpause()
             pauseStatus[channel] = False
 
@@ -140,5 +130,5 @@ def soundAddToMixer(channel, soundId, loops, startingVol):
                                   "fadeIn": False,
                                   }
 
-if __name__ == '__main__':
-    main()
+
+main()

@@ -68,11 +68,10 @@ public class AddNewPlayPopupController implements Initializable {
         writer.close();
 
         MainApp.NAME = playName.getText();
-        Parent root = FXMLLoader.load(getClass().getResource("mixer.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("splash.fxml"));
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.initStyle(StageStyle.UNDECORATED);
-        stage.setFullScreen(true);
 
         stage.show();
         ((Stage) confirmBtn.getScene().getWindow()).close();

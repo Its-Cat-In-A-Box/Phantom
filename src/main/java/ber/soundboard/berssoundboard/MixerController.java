@@ -336,8 +336,12 @@ public class MixerController implements Initializable {
 
     @FXML
     void onMousePressedExitButton(MouseEvent event) throws IOException {
-        updateJsonFile();
         MainApp.DOUT.writeUTF("TERMINATION");
+        while (true){
+            if (MainApp.DIN.available() > 0) {
+                break;
+            }
+        }
         System.exit(0);
     }
 
@@ -390,16 +394,7 @@ public class MixerController implements Initializable {
                         channel8Slider, channel8Sound, channel8Cue, channel8PredeterTransVol, channel8PredeterTransTime, channel8TransitionerVol, channel8TransitionerTime),
         };
         title.setText("Phantom - " + MainApp.NAME);
-        try {
-            MainApp.DOUT.writeUTF("LOADSOUND " + MainApp.NAME);
-            MainApp.DOUT.flush();
-            while (MainApp.DIN.available() > 0){
-                MainApp.DIN.read();
-            }
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
         SoundListPane.setPrefWidth((double) (800 * 77) / 300);
         mixerDir = new File("data", MainApp.NAME);
@@ -532,10 +527,11 @@ public class MixerController implements Initializable {
             else if (st.transitionType.equals("FADEIN")) {
                 mixer.predeterTransitionVolume.setText("S|" + st.newVolume);
                 mixer.volumeSlider.setValue(0);
+                mixer.volumeSlider.setValue(0);
             }
             else
                 mixer.predeterTransitionVolume.setText(String.valueOf(st.newVolume));
-            mixer.predeterTransitionTime.setText(String.valueOf(st.transitionTime));
+            mixer.predeterTransitionTime.setText(String.valueOf(st.transitionTime/1000));
         } else {
             mixer.predeterTransitionVolume.setText("N/A");
             mixer.predeterTransitionTime.setText("N/A");
@@ -560,7 +556,7 @@ public class MixerController implements Initializable {
                 slider.setValue(currentVol);
             }
         };
-        new Timer().schedule(transitionTasks[channel], 0L, (long) (time/Math.abs(newVolume - slider.getValue())));
+        new Timer().schedule(transitionTasks[channel], 0L, (long) (time * 1000L /Math.abs(newVolume - slider.getValue())));
     }
 
     void fadeOut(int time, Slider slider, int channel){
@@ -583,7 +579,7 @@ public class MixerController implements Initializable {
                 slider.setValue(currentVol);
             }
         };
-        new Timer().schedule(transitionTasks[channel], 0L, (long) (time/slider.getValue()));
+        new Timer().schedule(transitionTasks[channel], 0L, (long) (time * 1000L/slider.getValue()));
     }
 
     private static void sortAll() {

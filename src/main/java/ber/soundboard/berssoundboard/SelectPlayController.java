@@ -226,12 +226,12 @@ public class SelectPlayController implements Initializable{
     private void loadMixer(MouseEvent event, String name) throws IOException {
         if (!Objects.equals(name, "")){
             MainApp.NAME = name;
-            Parent root = FXMLLoader.load(getClass().getResource("mixer.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("splash.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            stage.setFullScreen(true);
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.show();
-            ((Node)(event.getSource())).getScene().getWindow().hide();
+            ((Stage) thirdrecent.getScene().getWindow()).close();
         }
     }
 
