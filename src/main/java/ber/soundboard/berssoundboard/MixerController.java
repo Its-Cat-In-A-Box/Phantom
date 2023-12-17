@@ -335,9 +335,10 @@ public class MixerController implements Initializable {
     }
 
     @FXML
-    void onMousePressedExitButton(MouseEvent event) throws IOException {
+    void onMousePressedExitButton(MouseEvent event) throws IOException, InterruptedException {
         updateJsonFile();
         MainApp.DOUT.writeUTF("TERMINATION");
+        Thread.sleep(500);
         System.exit(0);
     }
 

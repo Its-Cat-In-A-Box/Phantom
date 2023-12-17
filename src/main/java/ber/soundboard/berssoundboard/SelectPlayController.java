@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.*;
+import org.jetbrains.annotations.NotNull;
 
 
 import java.io.File;
@@ -208,31 +209,40 @@ public class SelectPlayController implements Initializable{
     }
 
     @FXML
-    void onFirstRecentClicked(MouseEvent event) throws IOException {
+    void onFirstRecentClicked(MouseEvent event) throws Exception {
         loadMixer(event, firstrecent.getText());
     }
 
 
     @FXML
-    void onSecondRecentClicked(MouseEvent event) throws IOException {
+    void onSecondRecentClicked(MouseEvent event) throws Exception {
         loadMixer(event, secondrecent.getText());
     }
 
     @FXML
-    void onThirdRecentClicked(MouseEvent event) throws IOException {
+    void onThirdRecentClicked(MouseEvent event) throws Exception {
         loadMixer(event, thirdrecent.getText());
     }
 
-    private void loadMixer(MouseEvent event, String name) throws IOException {
+    private void loadMixer(MouseEvent event, String name) throws Exception {
         if (!Objects.equals(name, "")){
+            MainApp.flushDIN();
             MainApp.NAME = name;
-            Parent root = FXMLLoader.load(getClass().getResource("mixer.fxml"));
+            Parent root;
+            try {
+                root = FXMLLoader.load(getClass().getResource("splash.fxml"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            stage.setFullScreen(true);
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.show();
-            ((Node)(event.getSource())).getScene().getWindow().hide();
+
+            ((Stage)thirdrecent.getScene().getWindow()).close();
         }
     }
+
+
 
 }

@@ -56,6 +56,8 @@ def main():
                             print(f"Loaded {items['soundId']} {items['soundFile']}")
                             soundData = pygame.mixer.Sound(f"{REQUEST_DATA_DIR}\\{jsonName}\\{items.get('soundFile')}")
                             SOUND_LIST.update({items['soundId']: soundData})
+                msg = jpysocket.jpyencode("LOADED")
+                connection.send(msg)
             elif cmdName == "SETVOL":
                 setVol(int(cmdArgs[1]), cmdArgs[2])
             elif cmdName == "FADE":
